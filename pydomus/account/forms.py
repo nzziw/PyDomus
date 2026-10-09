@@ -2,15 +2,17 @@ from django import forms
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField(label="Your Username", max_length=50)
-    password = forms.CharField(label="Your Password", widget=forms.PasswordInput)
+    username = forms.CharField(label="Username", max_length=50)
+    password = forms.CharField(label="Mot de passe", widget=forms.PasswordInput)
 
 
 class RegisterForm(forms.Form):
-    username = forms.CharField(label="Your Username", max_length=50)
-    email = forms.EmailField(label="Your Email")
-    password1 = forms.CharField(label="Password", widget=forms.PasswordInput)
-    password2 = forms.CharField(label="Confirm Password", widget=forms.PasswordInput)
+    username = forms.CharField(label="Username", max_length=50)
+    email = forms.EmailField(label="Email")
+    password1 = forms.CharField(label="Mot de passe", widget=forms.PasswordInput)
+    password2 = forms.CharField(
+        label="Confirmer le mot de passe", widget=forms.PasswordInput
+    )
 
     def clean(self):
         cleaned_data = (
