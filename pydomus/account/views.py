@@ -1,7 +1,8 @@
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect, render
 
-from .forms import LoginForm
+from .forms import LoginForm, RegisterForm
+from .models import Account
 
 
 # Create your views here.
@@ -24,4 +25,25 @@ def login_view(request):
 
 
 def register_view(request):
-    return render(request, "account/register.html")
+    if request.method == "POST":
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data["username"]
+            email = form.cleaned_data["email"]
+            password1 = form.cleaned_data["password1"]
+            password2 = form.cleaned_data["password2"]
+
+            if password1 != password2:
+                form.add_error("password2", "Les mots de passe ne correspondent pas.")
+            else:
+                # Create the user
+                user = Account.objects.create_user(
+                    username=username, email=email, password=password1
+                )
+                login(request, user)
+                return redirect(
+                    "account:login"
+                )  # Redirect to the login page after successful registration
+    else:
+        form = RegisterForm()
+    return render(request, "account/register.html", {"form": form})
