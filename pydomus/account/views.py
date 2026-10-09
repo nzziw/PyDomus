@@ -21,3 +21,7 @@ def login_view(request):
         form = LoginForm()
 
     return render(request, "account/login.html", {"form": form})
+
+
+def register_view(request):
+    return render(request, "account/register.html")
