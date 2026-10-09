@@ -139,7 +139,7 @@ a:hover {
     text-align: left;
 }
 
-.login-card form p {
+.login-card form > div {
     margin: 0 0 18px;
 }
 
@@ -197,11 +197,19 @@ a:hover {
     transform: scale(0.98);
 }
 
-/* Messages d'erreur de Django */
-.errorlist {
-    list-style: none;
-    margin: 6px 0 0;
+.form-errors {
+    margin-bottom: 20px;
+    padding: 12px 14px;
+    text-align: left;
+    background: rgba(214, 69, 69, 0.08);
+    border: 1px solid rgba(214, 69, 69, 0.3);
+    border-radius: 8px;
+}
+
+.form-errors .errorlist {
+    margin: 0;
     padding: 0;
+    list-style: none;
     font-size: 0.85rem;
     color: var(--danger);
 }
