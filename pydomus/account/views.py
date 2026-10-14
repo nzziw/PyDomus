@@ -133,7 +133,7 @@ def mfa_verify(request):
             )  # Try to match the provided totp code by the user with each of the user's devices.
             if device is not None:
                 django_otp.login(request, device)
-                return redirect("account:test")
+                return redirect("dashboard:home")
             form.add_error("code", "Code incorrect.")
     else:
         form = TOTPForm()
