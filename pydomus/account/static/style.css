@@ -238,3 +238,25 @@ a:hover {
     border-radius: 8px;
     image-rendering: pixelated;
 }
+
+/* ---------- Codes de secours ---------- */
+.backup-codes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin: 0 0 24px;
+    padding: 16px;
+    list-style: none;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+
+.backup-codes li {
+    padding: 6px 0;
+    text-align: center;
+    font-family: ui-monospace, Consolas, "Courier New", monospace;
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+    color: var(--text);
+}
