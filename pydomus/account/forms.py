@@ -26,4 +26,4 @@ class RegisterForm(forms.Form):
 
 
 class TOTPForm(forms.Form):
-    code = forms.CharField(label="Code", max_length=6)
+    code = forms.CharField(label="Code", max_length=8)
