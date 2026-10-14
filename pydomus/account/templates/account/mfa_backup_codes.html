@@ -12,7 +12,6 @@
                 {% endfor %}
                 </ul>
                 <form action="{% url 'dashboard:home' %}" method="get">
-                    {% csrf_token %}
                     <button type="submit" class="login-button">J'ai sauvegardé les codes.</button>
                 </form>
             </div>
