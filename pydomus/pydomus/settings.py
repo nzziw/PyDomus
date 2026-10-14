@@ -37,7 +37,10 @@ AUTH_USER_MODEL = "account.Account"
 LOGIN_URL = "account:login"
 
 # Where @totp_required redirects users when they are not logged in
-OTP_LOGIN_URL = "account:mfa-setup"
+OTP_LOGIN_URL = "account:mfa-verify"
+
+# Set the issuer name for TOTP devices, which will be displayed in the authenticator app
+OTP_TOTP_ISSUER = "PyDomus"
 
 # Application definition
 
