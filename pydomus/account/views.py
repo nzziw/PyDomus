@@ -150,8 +150,3 @@ def mfa_backup_codes(request):
     ):  # If there are no backup codes in the session, redirect to the dashboard home page
         return redirect("dashboard:home")
     return render(request, "account/mfa_backup_codes.html", {"codes": codes})
-
-
-@otp_required
-def test(request):
-    return render(request, "account/test.html")
