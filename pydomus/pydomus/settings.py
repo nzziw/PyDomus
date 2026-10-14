@@ -33,6 +33,15 @@ ALLOWED_HOSTS = ["*"]
 # Auth user model
 AUTH_USER_MODEL = "account.Account"
 
+# Where @login_required redirects users when they are not logged in
+LOGIN_URL = "account:login"
+
+# Where @totp_required redirects users when they are not logged in
+OTP_LOGIN_URL = "account:mfa-verify"
+
+# Set the issuer name for TOTP devices, which will be displayed in the authenticator app
+OTP_TOTP_ISSUER = "PyDomus"
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -42,6 +51,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_otp",
+    "django_otp.plugins.otp_totp",  # TOTPDevice
+    "django_otp.plugins.otp_static",  # codes de secours
     "account",
 ]
 
@@ -51,6 +63,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django_otp.middleware.OTPMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
