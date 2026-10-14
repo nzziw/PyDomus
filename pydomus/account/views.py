@@ -7,6 +7,8 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django_otp import match_token, user_has_device
+from django_otp.decorators import otp_required
+from django_otp.plugins.otp_static.models import StaticDevice, StaticToken
 from django_otp.plugins.otp_totp.models import TOTPDevice
 
 from .forms import LoginForm, RegisterForm, TOTPForm
@@ -21,6 +23,19 @@ def make_qr_base64(uri):
     return base64.b64encode(
         buffer.getvalue()
     ).decode()  # bytes to base64 string and decode to UTF-8
+
+
+def generate_backup_codes(user, count=10):
+    # Generate backup codes for a user and return them as a list of strings.
+    device, _ = StaticDevice.objects.get_or_create(user=user, name="Backup Codes")
+    device.token_set.all().delete()  # delete any existing backup codes for the user
+
+    codes = []
+    for _ in range(count):
+        token = StaticToken.random_token()
+        device.token_set.create(token=token)
+        codes.append(token)
+    return codes
 
 
 # Create your views here.
@@ -87,7 +102,10 @@ def mfa_setup(request):
                     device.confirmed = True
                     device.save()
                     django_otp.login(request, device)
-                    return redirect("dashboard:home")
+                    request.session["backup_codes"] = generate_backup_codes(
+                        request.user  # Generate backup codes for the user and store them in the session
+                    )
+                    return redirect("account:mfa-backup-codes")
                 form.add_error("code", "Code incorrect.")
         else:
             form = TOTPForm()
@@ -115,10 +133,25 @@ def mfa_verify(request):
             )  # Try to match the provided totp code by the user with each of the user's devices.
             if device is not None:
                 django_otp.login(request, device)
-                return redirect("dashboard:home")
+                return redirect("account:test")
             form.add_error("code", "Code incorrect.")
-        else:
-            form = TOTPForm()
+    else:
+        form = TOTPForm()
 
     # Atteint en GET, et en POST quand le code est faux
     return render(request, "account/mfa_verify.html", {"form": form})
+
+
+@otp_required
+def mfa_backup_codes(request):
+    codes = request.session.pop("backup_codes", None)
+    if (
+        codes is None
+    ):  # If there are no backup codes in the session, redirect to the dashboard home page
+        return redirect("dashboard:home")
+    return render(request, "account/mfa_backup_codes.html", {"codes": codes})
+
+
+@otp_required
+def test(request):
+    return render(request, "account/test.html")
