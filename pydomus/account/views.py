@@ -1,8 +1,26 @@
-from django.contrib.auth import authenticate, login
-from django.shortcuts import redirect, render
+import base64
+import io
 
-from .forms import LoginForm, RegisterForm
+import django_otp
+import qrcode
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect, render
+from django_otp import match_token, user_has_device
+from django_otp.plugins.otp_totp.models import TOTPDevice
+
+from .forms import LoginForm, RegisterForm, TOTPForm
 from .models import Account
+
+
+def make_qr_base64(uri):
+    # Transform the URI into a QR code image and return it as a base64-encoded string
+    image = qrcode.make(uri)  # create a QR code image from the URI in the memory
+    buffer = io.BytesIO()  # create a fake file in memory to hold the image
+    image.save(buffer, format="PNG")  # write the image to the fake file in PNG format
+    return base64.b64encode(
+        buffer.getvalue()
+    ).decode()  # bytes to base64 string and decode to UTF-8
 
 
 # Create your views here.
@@ -15,7 +33,9 @@ def login_view(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect("/")
+                return redirect(
+                    "account:mfa-verify"
+                )  # Redirect to the MFA verification page after successful login
             else:
                 form.add_error(None, "Nom d'utilisateur ou mot de passe incorrect.")
     else:
@@ -47,3 +67,58 @@ def register_view(request):
     else:
         form = RegisterForm()
     return render(request, "account/register.html", {"form": form})
+
+
+@login_required
+def mfa_setup(request):
+    if user_has_device(request.user):
+        # If the user already has a device, redirect them to the MFA verification page
+        return redirect("account:mfa-verify")
+    else:
+        device, created = TOTPDevice.objects.get_or_create(
+            user=request.user,
+            confirmed=False,  # Find or create a TOTP device for the user, but do not confirm it yet
+            defaults={"name": "Phone"},
+        )
+        if request.method == "POST":
+            form = TOTPForm(request.POST)
+            if form.is_valid():
+                if device.verify_token(form.cleaned_data["code"]):
+                    device.confirmed = True
+                    device.save()
+                    django_otp.login(request, device)
+                    return redirect("dashboard:home")
+                form.add_error("code", "Code incorrect.")
+        else:
+            form = TOTPForm()
+        uri = device.config_url
+        return render(
+            request,
+            "account/mfa_setup.html",
+            {
+                "qr_code": make_qr_base64(uri),
+                "form": form,
+            },
+        )
+
+
+@login_required
+def mfa_verify(request):
+    if not user_has_device(request.user):
+        return redirect("account:mfa-setup")
+
+    if request.method == "POST":
+        form = TOTPForm(request.POST)
+        if form.is_valid():
+            device = match_token(
+                request.user, form.cleaned_data["code"]
+            )  # Try to match the provided totp code by the user with each of the user's devices.
+            if device is not None:
+                django_otp.login(request, device)
+                return redirect("dashboard:home")
+            form.add_error("code", "Code incorrect.")
+        else:
+            form = TOTPForm()
+
+    # Atteint en GET, et en POST quand le code est faux
+    return render(request, "account/mfa_verify.html", {"form": form})

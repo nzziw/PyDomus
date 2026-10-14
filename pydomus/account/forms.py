@@ -23,3 +23,7 @@ class RegisterForm(forms.Form):
 
         if password1 and password2 and password1 != password2:
             raise forms.ValidationError("Passwords do not match.")
+
+
+class TOTPForm(forms.Form):
+    code = forms.CharField(label="Code", max_length=6)
