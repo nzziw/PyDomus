@@ -1,5 +1,7 @@
 from django import forms
 
+from .models import Account
+
 
 class LoginForm(forms.Form):
     username = forms.CharField(label="Username", max_length=50)
@@ -13,6 +15,20 @@ class RegisterForm(forms.Form):
     password2 = forms.CharField(
         label="Confirmer le mot de passe", widget=forms.PasswordInput
     )
+
+    # Custom validation to ensure that the username is unique
+    def clean_username(self):
+        username = self.cleaned_data["username"]
+        if Account.objects.filter(username__iexact=username).exists():
+            raise forms.ValidationError("Ce nom d'utilisateur est déjà utilisé.")
+        return username
+
+    # Custom validation to ensure that the email is unique
+    def clean_email(self):
+        email = self.cleaned_data["email"]
+        if Account.objects.filter(email__iexact=email).exists():
+            raise forms.ValidationError("Cette adresse e-mail est déjà utilisée.")
+        return email
 
     def clean(self):
         cleaned_data = (
