@@ -21,6 +21,9 @@
                             {% endfor %}
                         </div>
                     {% endif %}
+                    {% for message in messages %}
+                        <div class="form-message">{{ message }}</div>
+                    {% endfor %}
                     <button type="submit" class="login-button">Se connecter</button>
                 </form>
                 <p class="register-link">Vous n'avez pas de compte ? <a href="{% url 'account:register' %}">Inscrivez-vous</a></p>

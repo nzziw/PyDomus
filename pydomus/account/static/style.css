@@ -9,6 +9,7 @@
     --accent-hover: #1c6ad6;
     --accent-soft: rgba(47, 128, 237, 0.12);
     --danger: #d64545;
+    --validated: #4caf50;
     --radius: 12px;
     --shadow: 0 4px 24px rgba(15, 23, 42, 0.06);
     --font: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
@@ -212,6 +213,17 @@ a:hover {
     list-style: none;
     font-size: 0.85rem;
     color: var(--danger);
+}
+
+.form-message {
+    margin-bottom: 20px;
+    padding: 12px 14px;
+    text-align: left;
+    font-size: 0.85rem;
+    color: var(--validated);
+    background: rgba(46, 158, 91, 0.08);
+    border: 1px solid rgba(46, 158, 91, 0.3);
+    border-radius: 8px;
 }
 
 /* ---------- Responsive ---------- */

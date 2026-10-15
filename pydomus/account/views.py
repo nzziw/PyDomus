@@ -3,6 +3,7 @@ import io
 
 import django_otp
 import qrcode
+from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
@@ -10,6 +11,51 @@ from django_otp import match_token, user_has_device
 from django_otp.decorators import otp_required
 from django_otp.plugins.otp_static.models import StaticDevice, StaticToken
 from django_otp.plugins.otp_totp.models import TOTPDevice
+
+
+def register_view(request):
+    if request.method == "POST":
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            password1 = form.cleaned_data["password1"]
+            if password1 != form.cleaned_data["password2"]:
+                form.add_error("password2", "Les mots de passe ne correspondent pas.")
+            else:
+                Account.objects.create_user(
+                    username=form.cleaned_data["username"],
+                    email=form.cleaned_data["email"],
+                    password=password1,
+                )
+                messages.success(
+                    request, "Inscription réussie. Veuillez vous connecter."
+                )
+                return redirect("account:login")
+    else:
+        form = RegisterForm()
+    return render(request, "account/register.html", {"form": form})
+
+
+def register_view(request):
+    if request.method == "POST":
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            password1 = form.cleaned_data["password1"]
+            if password1 != form.cleaned_data["password2"]:
+                form.add_error("password2", "Les mots de passe ne correspondent pas.")
+            else:
+                Account.objects.create_user(
+                    username=form.cleaned_data["username"],
+                    email=form.cleaned_data["email"],
+                    password=password1,
+                )
+                messages.success(
+                    request, "Inscription réussie. Veuillez vous connecter."
+                )
+                return redirect("account:login")
+    else:
+        form = RegisterForm()
+    return render(request, "account/register.html", {"form": form})
+
 
 from .forms import LoginForm, RegisterForm, TOTPForm
 from .models import Account
@@ -76,8 +122,11 @@ def register_view(request):
                     username=username, email=email, password=password1
                 )
                 login(request, user)
+                messages.success(
+                    request, "Inscription réussie. Veuillez vous connecter."
+                )
                 return redirect(
-                    "account:login"
+                    "account:login",
                 )  # Redirect to the login page after successful registration
     else:
         form = RegisterForm()
