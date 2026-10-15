@@ -90,7 +90,7 @@ def mfa_setup(request):
         # If the user already has a device, redirect them to the MFA verification page
         return redirect("account:mfa-verify")
     else:
-        device, created = TOTPDevice.objects.get_or_create(
+        device, _ = TOTPDevice.objects.get_or_create(
             user=request.user,
             confirmed=False,  # Find or create a TOTP device for the user, but do not confirm it yet
             defaults={"name": "Phone"},
