@@ -19,6 +19,15 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 load_dotenv(BASE_DIR / ".env")
 
+# Environment variables for MQTT broker connection
+BROKER_BROKER = os.environ["BROKER_IP"]
+BROKER_TOPIC = os.environ[
+    "BROKER_TOPIC"
+]  # Base topic shared by all devices, e.g., "home" (devices publish on "home/<device>")
+BROKER_PORT = int(os.environ["BROKER_PORT"])
+BROKER_USERNAME = os.environ["BROKER_USERNAME"]
+BROKER_PASSWORD = os.environ["BROKER_PASSWORD"]
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
@@ -140,7 +149,7 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATIC_DIR = Path(__file__).resolve().parent.parent
-STATICFILES_DIRS = [ STATIC_DIR / "static"] 
+STATICFILES_DIRS = [STATIC_DIR / "static"]
 STATIC_ROOT = STATIC_DIR / "staticfiles"
 
 
