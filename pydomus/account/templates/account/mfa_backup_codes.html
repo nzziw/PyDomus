@@ -1,0 +1,20 @@
+{% extends 'account/base_account.html' %}
+{% block content %}
+    <main class="page">
+        <section class="login-area" aria-labelledby="login-title">
+            <div class="login-card">
+                <h2 id="login-title">Vérification TOTP</h2>
+                <p class="intro">Voici vos codes de secours en cas de perte d’accès à votre application d’authentification MFA.Veuillez sauvegarder ces codes dans un endroit sûr.
+                Vous ne pourrez pas les récupérer plus tard.</p>
+                <ul class="backup-codes">
+                {% for code in codes %}
+                    <li>{{ code }}</li>
+                {% endfor %}
+                </ul>
+                <form action="{% url 'dashboard:home' %}" method="get">
+                    <button type="submit" class="login-button">J'ai sauvegardé les codes.</button>
+                </form>
+            </div>
+        </section>
+    </main>
+{% endblock %}

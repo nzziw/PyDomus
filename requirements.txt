@@ -1,0 +1,10 @@
+asgiref==3.12.1
+Django==6.1.2
+django-otp==1.7.4
+pillow==12.3.0
+psycopg==3.3.6
+psycopg-binary==3.3.6
+PyOTP==2.10.0
+python-dotenv==1.2.4
+qrcode==8.2
+sqlparse==0.6.0

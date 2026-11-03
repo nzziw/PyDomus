@@ -49,13 +49,27 @@ git clone https://github.com/Unclad5572/PyDomus.git
 cd PyDomus
 ```
 
-### 2. Configurer les variables d'environnement
+## 2. Créer l'environnement virtuel et installer les dépendances
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+### 3. Configurer les variables d'environnement
 ```bash
 cp .env.example .env
 ```
 Modifiez ce que vous souhaitez dans le .env
 
-### 3. Créer l'environnement virtuel et installer les dépendances
+### 4. Créer l'environnement virtuel et installer les dépendances
 ```bash
-docker compose up -d --build
+docker compose up -d
+```
+
+### 5. Appliquer les migrations et lancer le serveur
+```bash
+python3 pydomus/manage.py migrate
+python3 pydomus/manage.py runserver 0.0.0.0:8000
 ```

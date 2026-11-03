@@ -1,0 +1,30 @@
+{% extends 'account/base_account.html' %}
+{% block content %}
+    <main class="page">
+        <section class="login-area" aria-labelledby="login-title">
+            <div class="login-card">
+                <h2 id="login-title">Configuration TOTP</h2>
+                <p class="intro">Scannez le qr-code sur votre smartphone avec une application.</p>
+                <form method="post" class="mfa-form">
+                    {% csrf_token %}
+                    <img src="data:image/png;base64,{{ qr_code }}" alt="QR code" class="qr-code">
+                    {% for field in form %}
+                        <div>
+                            {{ field.label_tag }}
+                            {{ field }}
+                        </div>
+                    {% endfor %}
+                    {% if form.errors %}
+                        <div class="form-errors">
+                            {{ form.non_field_errors }}
+                            {% for field in form %}
+                                {{ field.errors }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    <button type="submit" class="login-button">Continuer</button>
+                </form>
+            </div>
+        </section>
+    </main>
+{% endblock %}
