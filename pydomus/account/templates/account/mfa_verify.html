@@ -1,29 +1,12 @@
 {% extends 'account/base_account.html' %}
 {% block content %}
-    <main class="page">
-        <section class="login-area" aria-labelledby="login-title">
-            <div class="login-card">
-                <h2 id="login-title">Vérification TOTP</h2>
-                <p class="intro">Saisir le code affiché sur l'application d'authentification sur votre smartphone.</p>
-                <form method="post" class="mfa-form">
-                    {% csrf_token %}
-                    {% for field in form %}
-                        <div>
-                            {{ field.label_tag }}
-                            {{ field }}
-                        </div>
-                    {% endfor %}
-                    {% if form.errors %}
-                        <div class="form-errors">
-                            {{ form.non_field_errors }}
-                            {% for field in form %}
-                                {{ field.errors }}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                    <button type="submit" class="login-button">Vérifier</button>
-                </form>
-            </div>
-        </section>
-    </main>
+    <div class="card">
+        <h2>Vérification TOTP</h2>
+        <p class="intro">Saisir le code affiché sur l'application d'authentification sur votre smartphone.</p>
+        <form method="post">
+            {% csrf_token %}
+            {% include "partials/form_fields.html" %}
+            <button type="submit">Vérifier</button>
+        </form>
+    </div>
 {% endblock %}
