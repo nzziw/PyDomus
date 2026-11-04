@@ -15,6 +15,15 @@ class Device(models.Model):
         return self.topic
 
 
+class ServiceStatus(models.Model):
+    name = models.CharField(max_length=50, unique=True)  # Name of the service
+    online = models.BooleanField(default=False)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.name} : {'UP' if self.online else 'DOWN'}"
+
+
 class SensorReading(models.Model):
     device = models.ForeignKey(
         Device, on_delete=models.CASCADE, related_name="readings"
