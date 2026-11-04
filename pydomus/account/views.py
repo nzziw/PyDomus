@@ -35,28 +35,6 @@ def register_view(request):
     return render(request, "account/register.html", {"form": form})
 
 
-def register_view(request):
-    if request.method == "POST":
-        form = RegisterForm(request.POST)
-        if form.is_valid():
-            password1 = form.cleaned_data["password1"]
-            if password1 != form.cleaned_data["password2"]:
-                form.add_error("password2", "Les mots de passe ne correspondent pas.")
-            else:
-                Account.objects.create_user(
-                    username=form.cleaned_data["username"],
-                    email=form.cleaned_data["email"],
-                    password=password1,
-                )
-                messages.success(
-                    request, "Inscription réussie. Veuillez vous connecter."
-                )
-                return redirect("account:login")
-    else:
-        form = RegisterForm()
-    return render(request, "account/register.html", {"form": form})
-
-
 from .forms import LoginForm, RegisterForm, TOTPForm
 from .models import Account
 

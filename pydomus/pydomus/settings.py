@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "django_otp.plugins.otp_totp",  # TOTPDevice
     "django_otp.plugins.otp_static",  # codes de secours
     "account",
+    "dashboard",
 ]
 
 MIDDLEWARE = [
@@ -138,6 +139,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_DIR = Path(__file__).resolve().parent.parent
+STATICFILES_DIRS = [ STATIC_DIR / "static"] 
+STATIC_ROOT = STATIC_DIR / "staticfiles"
 
 
 # Email
