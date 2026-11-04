@@ -1,26 +1,33 @@
 {% extends 'dashboard/base_dashboard.html' %}
 {% block content %}
-    <h1>Bienvenue sur le système de gestion d'alerte de PyDomus</h1>
-    <div class="sensors">   
-        <h2>Alertes de température</h2>
-        {% for alert in alerts_temperature %}
-        <div class="sensor">    
-            <h2>{{ alert.device.topic }}</h2>
-            <p>Seuil : {{ alert.operator }} {{ alert.threshold }} °C</p>
-        </div>
-        {% empty %}
-            <p>Aucun capteur enregistré.</p>
-        {% endfor %}
-    </div>
     <div class="sensors">
-        <h2>Alertes d'humidité</h2>
-        {% for alert in alerts_humidity %}
-        <div class="sensor">
-            <h2>{{ alert.device.topic }}</h2>
-            <p>Seuil : {{ alert.operator }} {{ alert.threshold }} %</p>
+        <!-- TEMPERATURE -->
+        <div class="sensor alert-column">
+            <h2>Température</h2>
+            <ul class="alert-list">
+                {% for alert in alerts_temperature %}
+                <li>
+                    <span class="alert-device">{{ alert.device.topic }}</span>
+                    <span>{{ alert.get_operator_display }} {{ alert.threshold }} °C</span>
+                </li>
+                {% empty %}
+                <li>Aucune alerte de température.</li>
+                {% endfor %}
+            </ul>
         </div>
-        {% empty %}
-            <p>Aucun capteur enregistré.</p>
-        {% endfor %}
+        <!-- HUMIDITE -->
+        <div class="sensor alert-column">
+            <h2>Humidité</h2>
+            <ul class="alert-list">
+                {% for alert in alerts_humidity %}
+                <li>
+                    <span class="alert-device">{{ alert.device.topic }}</span>
+                    <span>{{ alert.get_operator_display }} {{ alert.threshold }} %</span>
+                </li>
+                {% empty %}
+                <li>Aucune alerte d'humidité.</li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
 {% endblock %}

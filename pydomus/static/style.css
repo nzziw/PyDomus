@@ -288,3 +288,33 @@ button:hover {
 .sensor .normal {
     color: var(--validated);
 }
+
+/* ---------- Alerts ---------- */
+.alert-column {
+    width: 320px;
+}
+
+.alert-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.alert-list li {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+}
+
+.alert-list li:last-child {
+    border-bottom: none;
+}
+
+.alert-device {
+    font-weight: 600;
+    color: var(--text);
+}
