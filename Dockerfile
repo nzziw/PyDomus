@@ -18,5 +18,5 @@ COPY pydomus/ ./pydomus/
 EXPOSE 8000
 
 # Commande exécutée au démarrage du conteneur
-# Lance le serveur Django et le rend accessible depuis l'extérieur
-CMD ["python", "pydomus/manage.py", "runserver", "0.0.0.0:8000"]
+# Lance l'application Django avec Gunicorn
+CMD ["gunicorn", "pydomus.wsgi:application", "--bind", "0.0.0.0:8000"]
