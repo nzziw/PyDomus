@@ -7,7 +7,7 @@
             <ul class="alert-list">
                 {% for alert in alerts_temperature %}
                 <li>
-                    <span class="alert-device">{{ alert.device.topic }}</span>
+                    <span class="alert-device">{{ alert.device.name }}</span>
                     <span>{{ alert.get_operator_display }} {{ alert.threshold }} °C</span>
                 </li>
                 {% empty %}
@@ -21,7 +21,7 @@
             <ul class="alert-list">
                 {% for alert in alerts_humidity %}
                 <li>
-                    <span class="alert-device">{{ alert.device.topic }}</span>
+                    <span class="alert-device">{{ alert.device.name }}</span>
                     <span>{{ alert.get_operator_display }} {{ alert.threshold }} %</span>
                 </li>
                 {% empty %}
