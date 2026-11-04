@@ -224,3 +224,41 @@ button:hover {
     border-radius: 8px;
     font-family: ui-monospace, Consolas, monospace;
 }
+
+/* ---------- Dashboard ---------- */
+.sensors {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+}
+
+.sensor {
+    width: 240px;
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.sensor h2 {
+    margin: 0 0 8px;
+    font-size: 1.1rem;
+}
+
+.sensor p {
+    margin: 4px 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.sensor .valeur {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--accent);
+}
+
+.sensor .normal {
+    color: var(--validated);
+}

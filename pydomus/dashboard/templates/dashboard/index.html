@@ -1,4 +1,29 @@
 {% extends 'dashboard/base_dashboard.html' %}
 {% block content %}
     <h1>Bienvenue sur le tableau de bord de PyDomus</h1>
+    <div class="sensors">
+        <!-- TEMPERATURE -->
+        <div class="sensor">
+            <h2>Température</h2>
+            <p class="valeur">21,8 °C</p>
+            <p class="lieu">Moyenne de la maison</p>
+            <p class="normal">Température normale</p>
+            <p class="seuil">Seuil d'alerte : 18 °C à 24 °C</p>
+        </div>
+        <!-- HUMIDITE -->
+        <div class="sensor">
+            <h2>Humidité</h2>
+            <p class="valeur">45 %</p>
+            <p class="lieu">Moyenne de la maison</p>
+            <p class="normal">Humidité normale</p>
+            <p class="seuil">Seuil d'alerte : 30 % à 60 %</p>
+        </div>
+        <!-- PORTE -->
+        <div class="sensor"> 
+            <h2>Porte</h2>
+            <p class="valeur">Ouverte</p>
+            <p class="lieu">Porte d'entrée</p>
+            <p class="normal">État actuel de la porte</p>
+        </div>
+    </div>
 {% endblock %}
