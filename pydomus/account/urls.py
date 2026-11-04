@@ -1,3 +1,4 @@
+from django.contrib.auth.views import LogoutView
 from django.urls import path
 
 from . import views
@@ -10,4 +11,5 @@ urlpatterns = [
     path("mfa-setup/", views.mfa_setup, name="mfa-setup"),
     path("mfa-verify/", views.mfa_verify, name="mfa-verify"),
     path("mfa-backup-codes/", views.mfa_backup_codes, name="mfa-backup-codes"),
+    path("logout/", LogoutView.as_view(next_page="account:login"), name="logout"),
 ]

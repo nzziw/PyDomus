@@ -16,6 +16,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+PROJECT_DIR = Path(__file__).resolve().parent.parent
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 load_dotenv(BASE_DIR / ".env")
 
@@ -74,7 +75,7 @@ ROOT_URLCONF = "pydomus.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [PROJECT_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -139,9 +140,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
 STATIC_URL = "static/"
-STATIC_DIR = Path(__file__).resolve().parent.parent
-STATICFILES_DIRS = [ STATIC_DIR / "static"] 
-STATIC_ROOT = STATIC_DIR / "staticfiles"
+STATICFILES_DIRS = [ PROJECT_DIR / "static"] 
+STATIC_ROOT = PROJECT_DIR / "staticfiles"
 
 
 # Email

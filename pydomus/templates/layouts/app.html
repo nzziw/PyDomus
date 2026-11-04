@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load static %}
+{% block navbar %}
+<nav class="navbar">
+    <img src="{% static 'images/logo.jpeg' %}" alt="Logo" class="navbar-logo">
+    <span class="navbar-title">PyDomus</span>
+    <a href="{% url 'dashboard:home' %}">Tableau de bord</a>
+    {% block navbar_links %}{% endblock %}
+    <form method="post" action="{% url 'account:logout' %}" class="navbar-user">
+        {% csrf_token %}
+        {{ user.get_username }}
+        <button type="submit">Déconnexion</button>
+    </form>
+</nav>
+{% endblock %}
