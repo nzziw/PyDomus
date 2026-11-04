@@ -13,5 +13,6 @@ def home_view(request):
 
 @otp_required
 def alert_view(request):
-    alerts = request.user.alerts.all()
-    return render(request, "dashboard/alerts.html", {"alerts": alerts})
+    alerts_temperature = request.user.alerts.filter(metric="temperature")
+    alerts_humidity = request.user.alerts.filter(metric="humidity")
+    return render(request, "dashboard/alerts.html", {"alerts_temperature": alerts_temperature, "alerts_humidity": alerts_humidity})

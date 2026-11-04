@@ -2,15 +2,25 @@
 {% block content %}
     <h1>Bienvenue sur le système de gestion d'alerte de PyDomus</h1>
     <div class="sensors">   
-        {% for alert in alerts %}
+        <h2>Alertes de température</h2>
+        {% for alert in alerts_temperature %}
         <div class="sensor">    
             <h2>{{ alert.device.topic }}</h2>
-            <p>Seuil : {{ alert.threshold }}</p>
-            <p>Métrique : {{ alert.metric }}</p>
+            <p>Seuil : {{ alert.operator }} {{ alert.threshold }} °C</p>
         </div>
         {% empty %}
             <p>Aucun capteur enregistré.</p>
         {% endfor %}
-    {% endfor %}
+    </div>
+    <div class="sensors">
+        <h2>Alertes d'humidité</h2>
+        {% for alert in alerts_humidity %}
+        <div class="sensor">
+            <h2>{{ alert.device.topic }}</h2>
+            <p>Seuil : {{ alert.operator }} {{ alert.threshold }} %</p>
+        </div>
+        {% empty %}
+            <p>Aucun capteur enregistré.</p>
+        {% endfor %}
     </div>
 {% endblock %}
