@@ -1,0 +1,16 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block content %}
+    <h1>Bienvenue sur le système de gestion d'alerte de PyDomus</h1>
+    <div class="sensors">   
+        {% for alert in alerts %}
+        <div class="sensor">    
+            <h2>{{ alert.device.topic }}</h2>
+            <p>Seuil : {{ alert.threshold }}</p>
+            <p>Métrique : {{ alert.metric }}</p>
+        </div>
+        {% empty %}
+            <p>Aucun capteur enregistré.</p>
+        {% endfor %}
+    {% endfor %}
+    </div>
+{% endblock %}
