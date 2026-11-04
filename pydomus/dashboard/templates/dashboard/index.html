@@ -2,28 +2,27 @@
 {% block content %}
     <h1>Bienvenue sur le tableau de bord de PyDomus</h1>
     <div class="sensors">
-        <!-- TEMPERATURE -->
+        {% for sensor in sensors %}
         <div class="sensor">
-            <h2>Température</h2>
-            <p class="valeur">21,8 °C</p>
-            <p class="lieu">Moyenne de la maison</p>
-            <p class="normal">Température normale</p>
-            <p class="seuil">Seuil d'alerte : 18 °C à 24 °C</p>
+            <h2>{{ sensor.device.topic }}</h2>
+
+            {% if sensor.last_reading %}
+                {% if sensor.last_reading.temperature is not None %}
+                    <p class="valeur">{{ sensor.last_reading.temperature }} °C</p>
+                {% endif %}
+                {% if sensor.last_reading.humidity is not None %}
+                    <p class="valeur">Humidité : {{ sensor.last_reading.humidity }} %</p>
+                {% endif %}
+                {% if sensor.last_reading.battery is not None %}
+                    <p class="lieu">Batterie : {{ sensor.last_reading.battery }} %</p>
+                {% endif %}
+                <p class="normal">Mis à jour le {{ sensor.last_reading.recorded_at|date:"d/m/Y H:i" }}</p>
+            {% else %}
+                <p class="normal">Aucune mesure reçue</p>
+            {% endif %}
         </div>
-        <!-- HUMIDITE -->
-        <div class="sensor">
-            <h2>Humidité</h2>
-            <p class="valeur">45 %</p>
-            <p class="lieu">Moyenne de la maison</p>
-            <p class="normal">Humidité normale</p>
-            <p class="seuil">Seuil d'alerte : 30 % à 60 %</p>
-        </div>
-        <!-- PORTE -->
-        <div class="sensor"> 
-            <h2>Porte</h2>
-            <p class="valeur">Ouverte</p>
-            <p class="lieu">Porte d'entrée</p>
-            <p class="normal">État actuel de la porte</p>
-        </div>
+        {% empty %}
+            <p>Aucun capteur enregistré.</p>
+        {% endfor %}
     </div>
 {% endblock %}

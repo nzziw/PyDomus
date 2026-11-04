@@ -54,7 +54,6 @@ a {
 
 a:hover {
     color: var(--accent-hover);
-    text-decoration: underline;
 }
 
 /* ---------- Navbar ---------- */
@@ -79,8 +78,29 @@ a:hover {
     font-weight: 600;
 }
 
+.navbar a {
+    padding: 6px 10px;
+    color: var(--text-muted);
+    border-radius: 8px;
+}
+
+.navbar a:hover {
+    color: var(--text);
+    background: var(--bg);
+}
+
 .navbar-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
     margin-left: auto;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.navbar-user button {
+    padding: 8px 16px;
+    font-size: 0.875rem;
 }
 
 /* ---------- Page : contenu centré ---------- */
@@ -161,7 +181,7 @@ a:hover {
 
 /* ---------- Boutons ---------- */
 button {
-    padding: 12px;
+    padding: 12px 20px;
     font: inherit;
     font-weight: 600;
     color: #fff;
@@ -226,6 +246,12 @@ button:hover {
 }
 
 /* ---------- Dashboard ---------- */
+.page h1 {
+    margin: 0 0 32px;
+    font-size: 1.75rem;
+    font-weight: 600;
+}
+
 .sensors {
     display: flex;
     flex-wrap: wrap;
