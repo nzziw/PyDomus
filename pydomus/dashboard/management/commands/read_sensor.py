@@ -11,7 +11,7 @@ def on_connect(client, userdata, flags, reason_code, properties):
         print(f"Échec de connexion : {reason_code}")
     else:
         print("Connecté à Mosquitto avec succès")
-        client.subscribe(f"{settings.BROKER_TOPIC}/#")
+        client.subscribe(f"{settings.BROKER_TOPIC}/+")
 
 
 def on_disconnect(client, userdata, flags, reason_code, properties):
