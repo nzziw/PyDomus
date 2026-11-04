@@ -8,3 +8,4 @@ PyOTP==2.10.0
 python-dotenv==1.2.4
 qrcode==8.2
 sqlparse==0.6.0
+gunicorn
