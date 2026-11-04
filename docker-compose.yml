@@ -16,9 +16,32 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - pydomus-network
+      - proxy 
+
+
+  caddy:
+    image: docker.io/caddy:latest
+    container_name: caddy
+    hostname: caddy
+    restart: unless-stopped
+    ports:
+      #- "80:80"
+      - "443:443"
+
+    volumes:
+      - ./caddy/conf:/etc/caddy
+      - caddy_data:/data
+      - caddy_config:/config
+
+    networks:
+      - proxy
+
 
 volumes:
   postgres_data:
+  caddy_data:
+  caddy_config:
+
 networks:
-  pydomus-network:
+  proxy:
+    driver: bridge
