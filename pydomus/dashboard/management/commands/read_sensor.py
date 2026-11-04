@@ -1,21 +1,37 @@
 import json
 
 import paho.mqtt.client as mqtt
-from dashboard.models import Device, SensorReading
+from dashboard.models import Device, SensorReading, ServiceStatus
 from django.conf import settings
 from django.core.management.base import BaseCommand
+
+
+# Functions to manage the service status in the database
+def set_status(name, online):
+    ServiceStatus.objects.update_or_create(name=name, defaults={"online": online})
 
 
 def on_connect(client, userdata, flags, reason_code, properties):
     if reason_code.is_failure:
         print(f"Échec de connexion : {reason_code}")
+        set_status("broker", False)
     else:
         print("Connecté à Mosquitto avec succès")
-        client.subscribe(f"{settings.BROKER_TOPIC}/+")
+        set_status("broker", True)
+        client.subscribe(
+            [
+                (f"{settings.BROKER_TOPIC}/+", 0),  # measurements from all devices
+                (
+                    f"{settings.BROKER_TOPIC}/bridge/state",
+                    0,
+                ),  # Zigbee2MQTT online / offline
+            ]
+        )
 
 
 def on_disconnect(client, userdata, flags, reason_code, properties):
     print(f"Déconnecté : {reason_code}")
+    set_status("broker", False)
 
 
 def on_subscribe(client, userdata, mid, reason_code_list, properties):
@@ -24,6 +40,17 @@ def on_subscribe(client, userdata, mid, reason_code_list, properties):
 
 def on_message(client, userdata, msg):
     print(f"[{msg.topic}] {msg.payload.decode(errors='replace')}")
+    if msg.topic == f"{settings.BROKER_TOPIC}/bridge/state":
+        texte = msg.payload.decode(errors="replace")
+        try:
+            etat = json.loads(texte).get(
+                "state"
+            )  # latest version : {"state": "online"}
+        except (json.JSONDecodeError, AttributeError):
+            etat = texte  # legacy version : "online" or "offline"
+        set_status("zigbee2mqtt", etat == "online")
+        print(f"Zigbee2MQTT : {etat}")
+        return
 
     try:
         data = json.loads(
@@ -31,7 +58,7 @@ def on_message(client, userdata, msg):
         )  # Convert the JSON message into a Python dict
     except (UnicodeDecodeError, json.JSONDecodeError):
         print(f"Message illisible ignoré : {msg.topic}")
-        return 1
+        return
 
     device, created = (
         Device.objects.get_or_create(  # Create a new device if it doesn't exist
