@@ -11,8 +11,12 @@ class Device(models.Model):
     topic = models.CharField(max_length=100, unique=True)
     device_type = models.CharField(max_length=20, choices=DeviceType.choices)
 
+    @property
+    def name(self):
+        return self.topic.split("/")[-1]  # "home/salon" to "salon"
+
     def __str__(self):
-        return self.topic
+        return self.name
 
 
 class ServiceStatus(models.Model):
