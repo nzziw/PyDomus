@@ -20,6 +20,9 @@ class ServiceStatus(models.Model):
     online = models.BooleanField(default=False)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        verbose_name_plural = "Service Statuses"
+
     def __str__(self):
         return f"{self.name} : {'UP' if self.online else 'DOWN'}"
 
