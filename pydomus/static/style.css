@@ -302,7 +302,7 @@ button:hover {
 
 .alert-list li {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
     gap: 12px;
     padding: 8px 0;
     font-size: 0.9rem;
@@ -315,8 +315,30 @@ button:hover {
 }
 
 .alert-device {
+    flex: 1;
     font-weight: 600;
     color: var(--text);
+}
+
+.alert-delete-form {
+    margin: 0;
+}
+
+.alert-delete {
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    font-size: 0.75rem;
+    line-height: 1;
+    color: var(--danger);
+    background: transparent;
+    border: 1px solid var(--danger);
+    border-radius: 6px;
+}
+
+.alert-delete:hover {
+    color: #fff;
+    background: var(--danger);
 }
 
 /* ---------- Formulaire de création d'alerte ---------- */

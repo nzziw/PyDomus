@@ -29,3 +29,11 @@ def alert_view(request):
         "alerts_temperature": request.user.alerts.filter(metric="temperature"),
         "alerts_humidity": request.user.alerts.filter(metric="humidity"),
     })
+
+@otp_required
+def alert_delete_view(request, pk):
+    if request.method == "POST":
+        alert = request.user.alerts.filter(pk=pk).first()
+        if alert:
+            alert.delete()
+    return redirect("dashboard:alert")
