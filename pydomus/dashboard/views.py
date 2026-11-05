@@ -13,7 +13,13 @@ def home_view(request):
     sensors = []
     for device in Device.objects.filter(device_type=Device.DeviceType.SENSOR):
         sensors.append({"device": device, "last_reading": device.readings.first()})
-    return render(request, "dashboard/index.html", {"sensors": sensors})
+    triggered_alerts = request.user.alerts.filter(triggered=True)
+
+    return render(
+        request,
+        "dashboard/index.html",
+        {"sensors": sensors, "triggered_alerts": triggered_alerts},
+    )
 
 
 @otp_required
