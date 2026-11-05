@@ -42,6 +42,7 @@ def alert_view(request):
             "form": form,
             "alerts_temperature": request.user.alerts.filter(metric="temperature"),
             "alerts_humidity": request.user.alerts.filter(metric="humidity"),
+            "alerts_battery": request.user.alerts.filter(metric="battery"),
         },
     )
 

@@ -51,6 +51,7 @@ class SensorAlert(models.Model):
     class Metric(models.TextChoices):
         TEMPERATURE = "temperature", "Température"
         HUMIDITY = "humidity", "Humidité"
+        BATTERY = "battery", "Batterie"
 
     class Operator(models.TextChoices):
         GREATER = "gt", "supérieure à"
