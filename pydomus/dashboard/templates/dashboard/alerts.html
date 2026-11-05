@@ -52,5 +52,23 @@
                 {% endfor %}
             </ul>
         </div>
+        <!-- BATTERIE -->
+        <div class="sensor alert-column">
+            <h2>Batterie</h2>
+            <ul class="alert-list">
+                {% for alert in alerts_battery %}
+                <li>
+                    <span class="alert-device">{{ alert.device.name }}</span>
+                    <span>{{ alert.get_operator_display }} {{ alert.threshold }} %</span>
+                    <form method="post" action="{% url 'dashboard:alert_delete' alert.pk %}" class="alert-delete-form">
+                        {% csrf_token %}
+                        <button type="submit" class="alert-delete" title="Supprimer l'alerte" aria-label="Supprimer l'alerte">X</button>
+                    </form>
+                </li>
+                {% empty %}
+                <li>Aucune alerte de batterie.</li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
 {% endblock %}
