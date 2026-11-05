@@ -29,6 +29,10 @@ BROKER_PORT = int(os.environ["BROKER_PORT"])
 BROKER_USERNAME = os.environ["BROKER_USERNAME"]
 BROKER_PASSWORD = os.environ["BROKER_PASSWORD"]
 
+# Environment variables for Telegram bot
+TELEGRAM_BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
+TELEGRAM_BOT_USERNAME = os.environ["TELEGRAM_BOT_USERNAME"]
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
@@ -149,7 +153,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
 STATIC_URL = "static/"
-STATICFILES_DIRS = [ PROJECT_DIR / "static"] 
+STATICFILES_DIRS = [PROJECT_DIR / "static"]
 STATIC_ROOT = PROJECT_DIR / "staticfiles"
 
 
