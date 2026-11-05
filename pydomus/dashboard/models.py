@@ -72,6 +72,29 @@ class SensorAlert(models.Model):
     threshold = models.FloatField()
     created_at = models.DateTimeField(default=timezone.now)
 
+    triggered = models.BooleanField(default=False)
+    triggered_at = models.DateTimeField(null=True, blank=True)
+
+    def is_exceeded(self, value):
+        # Returns True if the value exceeds the threshold based on the operator, False otherwise.
+        if value is None:
+            return False
+        if self.operator == self.Operator.GREATER:
+            return value > self.threshold
+        return value < self.threshold
+
+    @property
+    def current_value(self):
+        # Returns the latest reading for the specified metric of the associated device, or None if no readings are available.
+        reading = self.device.readings.first()
+        if reading is None:
+            return None
+        return getattr(reading, self.metric)
+
+    @property
+    def unit(self):
+        return "°C" if self.metric == self.Metric.TEMPERATURE else "%"
+
     class Meta:
         ordering = ["-created_at"]
 
