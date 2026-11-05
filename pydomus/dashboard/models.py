@@ -56,7 +56,12 @@ class SensorAlert(models.Model):
         GREATER = "gt", "supérieure à"
         LESS = "lt", "inférieure à"
 
-    device = models.ForeignKey(Device, on_delete=models.CASCADE, related_name="alerts")
+    device = models.ForeignKey(
+        Device,
+        on_delete=models.CASCADE,
+        related_name="alerts",
+        limit_choices_to={"device_type": Device.DeviceType.SENSOR},
+    )
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
