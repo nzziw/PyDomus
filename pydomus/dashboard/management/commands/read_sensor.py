@@ -1,14 +1,41 @@
 import json
 
 import paho.mqtt.client as mqtt
-from dashboard.models import Device, SensorReading, ServiceStatus
+from dashboard.models import Device, SensorAlert, SensorReading, ServiceStatus
 from django.conf import settings
 from django.core.management.base import BaseCommand
+from django.utils import timezone
 
 
 # Functions to manage the service status in the database
 def set_status(name, online):
     ServiceStatus.objects.update_or_create(name=name, defaults={"online": online})
+
+
+def check_alerts(reading):
+    alerts = SensorAlert.objects.filter(device=reading.device)
+
+    for alert in alerts:
+        if alert.metric == "temperature":
+            value = reading.temperature
+        else:
+            value = reading.humidity
+
+        if value is None:
+            continue
+
+        exceeded = alert.is_exceeded(value)
+
+        if exceeded and not alert.triggered:
+            alert.triggered = True
+            alert.triggered_at = timezone.now()
+            alert.save()
+            print(f"Alerte déclenchée : {alert}")
+        elif not exceeded and alert.triggered:
+            alert.triggered = False
+            alert.triggered_at = None
+            alert.save()
+            print(f"Alerte terminée : {alert}")
 
 
 def on_connect(client, userdata, flags, reason_code, properties):
@@ -69,13 +96,17 @@ def on_message(client, userdata, msg):
     if created:  # If a new device was created, print a message
         print(f"Nouvel appareil créé : {device}")
 
-    SensorReading.objects.create(  # Create a new sensor reading for the device
-        device=device,
-        temperature=data.get("temperature"),
-        humidity=data.get("humidity"),
-        battery=data.get("battery"),
+    reading = (
+        SensorReading.objects.create(  # Create a new sensor reading for the device
+            device=device,
+            temperature=data.get("temperature"),
+            humidity=data.get("humidity"),
+            battery=data.get("battery"),
+        )
     )
     print(f"Nouvelle lecture enregistrée pour {device}: {data}")
+
+    check_alerts(reading)
 
 
 class Command(BaseCommand):
