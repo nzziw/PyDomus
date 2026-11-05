@@ -21,12 +21,16 @@ def alert_view(request):
     if request.method == "POST":
         form = SensorAlertForm(request.POST)
         if form.is_valid():
-            if request.user.alerts.filter(**form.cleaned_data).exists():
+            data = form.cleaned_data
+            if request.user.alerts.filter(**data).exists():
                 form.add_error(None, "Cette alerte existe déjà.")
             else:
-                alert = form.save(commit=False)
-                alert.user = request.user
-                alert.save()
+                request.user.alerts.update_or_create(
+                    device=data["device"],
+                    metric=data["metric"],
+                    operator=data["operator"],
+                    defaults={"threshold": data["threshold"]},
+                )
                 return redirect("dashboard:alert")
     else:
         form = SensorAlertForm()
