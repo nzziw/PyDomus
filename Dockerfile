@@ -3,7 +3,7 @@
 FROM python:3.13
 
 # Définit le dossier de travail dans le conteneur
-WORKDIR /app
+WORKDIR /app/pydomus
 
 # Copie le fichier des dépendances dans le conteneur
 COPY requirements.txt .
@@ -12,7 +12,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copie le code de l'application Django dans le conteneur
-COPY pydomus/ ./pydomus/
+COPY pydomus/ .
 
 # Indique que l'application utilise le port 8000
 EXPOSE 8000
