@@ -12,3 +12,9 @@ class SensorAlertForm(forms.ModelForm):
             "operator": "Condition",
             "threshold": "Seuil",
         }
+
+    def clean_threshold(self):
+        threshold = self.cleaned_data["threshold"]
+        if self.cleaned_data.get("metric") == "battery" and not 0 <= threshold <= 100:
+            self.add_error(None, "Le seuil de batterie doit être entre 0 et 100 %.")
+        return threshold
