@@ -1,9 +1,19 @@
 {% extends 'dashboard/base_dashboard.html' %}
 {% block content %}
     <form method="post" class="alert-form">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Ajouter l'alerte</button>
+        {% csrf_token %}
+        <h2>Nouvelle alerte</h2>
+        {{ form.non_field_errors }}
+        <div class="alert-form-fields">
+            {% for field in form %}
+            <div class="form-field">
+                {{ field.label_tag }}
+                {{ field }}
+                {{ field.errors }}
+            </div>
+            {% endfor %}
+            <button type="submit">Ajouter</button>
+        </div>
     </form>
     <div class="sensors">
         <!-- TEMPERATURE -->

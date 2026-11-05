@@ -318,3 +318,48 @@ button:hover {
     font-weight: 600;
     color: var(--text);
 }
+
+/* ---------- Formulaire de création d'alerte ---------- */
+.alert-form {
+    width: 664px;
+    margin-bottom: 24px;
+    padding: 24px;
+    text-align: left;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.alert-form h2 {
+    margin: 0 0 16px;
+    font-size: 1.1rem;
+}
+
+.alert-form-fields {
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+}
+
+.alert-form .form-field {
+    flex: 1;
+}
+
+.alert-form label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.alert-form select,
+.alert-form input {
+    width: 100%;
+    padding: 10px;
+    font: inherit;
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
