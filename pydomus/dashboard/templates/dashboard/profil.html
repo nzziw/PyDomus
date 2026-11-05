@@ -1,0 +1,14 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block content %}
+    <h1>Votre Profil :</h1>
+    <div class="profil">
+        <p><strong>Nom d'utilisateur :</strong> {{ user.username }}</p>
+        <p><strong>Email :</strong> {{ user.email }}</p>
+        {% if compte.chat_id %}
+            <p>Telegram lié depuis le {{ compte.linked_at|date:"d/m/Y H:i" }}.</p>
+            {% else %}
+            <p>Recevez vos alertes sur Telegram :</p>
+            <a href="{{ lien }}" target="_blank">Lier mon compte Telegram</a>
+        {% endif %}
+    </div>
+{% endblock %}
