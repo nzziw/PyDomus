@@ -17,7 +17,7 @@ services:
       - backend 
 
   django:
-    build: .
+    image: ghcr.io/nzziw/pydomus:latest
     container_name: pydomus-django
     restart: unless-stopped
     env_file: .env
