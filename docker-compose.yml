@@ -50,6 +50,9 @@ services:
       - static_data:/static:ro
     networks:
       - frontend
+    depends_on:
+      django:
+        condition: service_healthy
 
 volumes:
   postgres_data:
