@@ -1,6 +1,9 @@
 # Image de base : Python 3.13
 FROM python:3.13-slim
 
+# Empêche Python de mettre en cache les fichiers .pyc et permet d'écrire dans stdout/stderr accessible depuis podman logs
+ENV PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1 
+
 # Définit le dossier de travail dans le conteneur
 WORKDIR /app/pydomus
 
