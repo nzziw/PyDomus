@@ -29,6 +29,12 @@ services:
     networks:
       - frontend
       - backend
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health/')\""]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
 
   caddy:
     image: docker.io/caddy:2-alpine
