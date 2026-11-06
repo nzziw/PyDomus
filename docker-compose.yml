@@ -14,7 +14,7 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - proxy 
+      - backend 
 
   django:
     build: .
@@ -27,11 +27,12 @@ services:
       db:
         condition: service_healthy
     networks:
-      - proxy
+      - frontend
+      - backend
 
   caddy:
     image: docker.io/caddy:2-alpine
-    container_name: caddy
+    container_name: pydomus-caddy
     hostname: caddy
     restart: unless-stopped
     ports:
@@ -42,7 +43,7 @@ services:
       - caddy_config:/config
       - static_data:/static:ro
     networks:
-      - proxy
+      - frontend
 
 volumes:
   postgres_data:
@@ -51,5 +52,8 @@ volumes:
   static_data:
 
 networks:
-  proxy:
+  frontend:
     driver: bridge
+  backend:
+    driver: bridge
+    internal: true
