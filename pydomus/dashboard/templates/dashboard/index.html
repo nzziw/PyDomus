@@ -1,10 +1,26 @@
 {% extends 'dashboard/base_dashboard.html' %}
 {% block content %}
-    <h1>Bienvenue sur le tableau de bord de PyDomus</h1>
+    <div class="alerts-triggered-list">
+        <h2>Vos alertes :</h2>
+        <ul class="alert-list">
+            {% for alert in triggered_alerts %}
+            <li>
+                <span class="alert-device">{{ alert.device.name }}</span>
+                <span>
+                    {{ alert.get_metric_display }} : {{ alert.current_value }} {{ alert.unit }}
+                    ({{ alert.get_operator_display }} {{ alert.threshold }} {{ alert.unit }})
+                </span>
+                <small>depuis {{ alert.triggered_at|timesince }}</small>
+            </li>
+            {% empty %}
+            <li>Aucune alerte de température.</li>
+            {% endfor %}
+        </ul>
+    </div>
     <div class="sensors">
         {% for sensor in sensors %}
         <div class="sensor">
-            <h2>{{ sensor.device.topic }}</h2>
+            <h2>{{ sensor.device.name }}</h2>
 
             {% if sensor.last_reading %}
                 {% if sensor.last_reading.temperature is not None %}

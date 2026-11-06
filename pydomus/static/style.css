@@ -288,3 +288,108 @@ button:hover {
 .sensor .normal {
     color: var(--validated);
 }
+
+/* ---------- Alerts ---------- */
+.alert-column {
+    width: 320px;
+}
+
+.alert-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.alert-list li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+}
+
+.alert-list li:last-child {
+    border-bottom: none;
+}
+
+.alert-device {
+    flex: 1;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.alert-delete-form {
+    margin: 0;
+}
+
+.alert-delete {
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    font-size: 0.75rem;
+    line-height: 1;
+    color: var(--danger);
+    background: transparent;
+    border: 1px solid var(--danger);
+    border-radius: 6px;
+}
+
+.alert-delete:hover {
+    color: #fff;
+    background: var(--danger);
+}
+
+/* ---------- alert form and alerts-triggered ---------- */
+.alert-form,
+.alerts-triggered-list {
+    width: 664px;
+    max-width: 100%;
+    margin-bottom: 24px;
+    padding: 24px;
+    text-align: left;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.alert-form h2,
+.alerts-triggered-list h2 {
+    margin: 0 0 16px;
+    font-size: 1.1rem;
+}
+
+.alert-form h2 {
+    margin: 0 0 16px;
+    font-size: 1.1rem;
+}
+
+.alert-form-fields {
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+}
+
+.alert-form .form-field {
+    flex: 1;
+}
+
+.alert-form label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.alert-form select,
+.alert-form input {
+    width: 100%;
+    padding: 10px;
+    font: inherit;
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
