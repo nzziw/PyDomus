@@ -9,6 +9,7 @@ from django.utils import timezone
 
 
 def handle_incoming_message(chat_id, texte):
+    # If the message does not start with /start, send a message to the user indicating that the bot only serves to send PyDomus alerts and cannot receive messages.
     if not texte.startswith("/start"):
         send_message(
             chat_id,
@@ -28,16 +29,19 @@ def handle_incoming_message(chat_id, texte):
 
     code = morceaux[1]
     try:
-        compte = TelegramAccount.objects.get(link_code=code)
+        compte = TelegramAccount.objects.get(
+            link_code=code
+        )  # Get the TelegramAccount associated with the provided link code
     except TelegramAccount.DoesNotExist:
         send_message(chat_id, "Lien invalide.")
         return
 
+    # Link the Telegram account to the user and save the chat_id
     compte.chat_id = chat_id
     compte.linked_at = timezone.now()
     compte.save()
 
-    send_message(
+    send_message(  # Send a welcome message to the user after successfully linking their Telegram account
         chat_id,
         f"Bienvenue sur votre Bot Telegram {compte.user.username} ! Vous recevrez ici vos alertes personnalisées que vous pouvez configurer depuis votre Dashboard.",
     )
@@ -53,6 +57,7 @@ class Command(BaseCommand):
 
         while True:
             try:
+                # Get updates from the Telegram Bot API with a long polling timeout of 30 seconds
                 updates = call(
                     "getUpdates",
                     timeout_http=40,
@@ -68,6 +73,7 @@ class Command(BaseCommand):
             close_old_connections()
 
             for update in updates:
+                # Update the offset to the next update_id to avoid processing the same update again
                 offset = update["update_id"] + 1
 
                 message = update.get("message")
@@ -79,6 +85,7 @@ class Command(BaseCommand):
                 print(f"Message reçu de {chat_id} : {texte}")
 
                 try:
+                    # Handle the incoming message by calling the handle_incoming_message function
                     handle_incoming_message(chat_id, texte)
                 except Exception as e:
                     print(f"Erreur en traitant le message : {e}")
