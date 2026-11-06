@@ -18,4 +18,6 @@ EXPOSE 8000
 
 # Commande exécutée au démarrage du conteneur
 # Lance l'application Django avec Gunicorn
-CMD ["gunicorn", "pydomus.wsgi:application", "--bind", "0.0.0.0:8000"]
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+CMD ["/entrypoint.sh"]

@@ -5,7 +5,7 @@ services:
     restart: unless-stopped
     env_file: .env
     ports:
-      - "127.0.0.1:5432:5432"
+      - "5432"
     #volume for persisting database data
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -25,7 +25,7 @@ services:
     expose:
       - "8000"
     volumes:
-      - ./pydomus/account/static:/app/pydomus/staticfiles
+      - static_data:/app/pydomus/staticfiles
     depends_on:
       db:
         condition: service_healthy
