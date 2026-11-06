@@ -43,7 +43,7 @@ services:
       - ./caddy/conf:/etc/caddy
       - caddy_data:/data
       - caddy_config:/config
-      - ./pydomus/account/static:/static:ro
+      - static_data:/static:ro
     networks:
       - proxy
 
