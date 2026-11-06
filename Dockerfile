@@ -1,5 +1,5 @@
 # Image de base : Python 3.13
-FROM python:3.13
+FROM python:3.13-slim
 
 # Définit le dossier de travail dans le conteneur
 WORKDIR /app/pydomus
