@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('dashboard', '0008_alter_sensoralert_device'),
+        ('dashboard', '0009_sensoralert_battery_metric'),
     ]
 
     operations = [

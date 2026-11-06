@@ -4,8 +4,6 @@ services:
     container_name: pydomus-db
     restart: unless-stopped
     env_file: .env
-    ports:
-      - "127.0.0.1:5432:5432"
     #volume for persisting database data
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -16,25 +14,25 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - proxy 
+      - backend 
 
   django:
-    build: .
+    image: ghcr.io/nzziw/pydomus:latest
     container_name: pydomus-django
+    restart: unless-stopped
     env_file: .env
-    expose:
-      - "8000"
     volumes:
-      - ./pydomus/account/static:/app/pydomus/staticfiles
+      - static_data:/app/pydomus/staticfiles
     depends_on:
       db:
         condition: service_healthy
     networks:
-      - proxy
+      - frontend
+      - backend
 
   caddy:
-    image: docker.io/caddy:latest
-    container_name: caddy
+    image: docker.io/caddy:2-alpine
+    container_name: pydomus-caddy
     hostname: caddy
     restart: unless-stopped
     ports:
@@ -43,9 +41,9 @@ services:
       - ./caddy/conf:/etc/caddy
       - caddy_data:/data
       - caddy_config:/config
-      - ./pydomus/account/static:/static:ro
+      - static_data:/static:ro
     networks:
-      - proxy
+      - frontend
 
 volumes:
   postgres_data:
@@ -54,5 +52,8 @@ volumes:
   static_data:
 
 networks:
-  proxy:
+  frontend:
     driver: bridge
+  backend:
+    driver: bridge
+    internal: true
