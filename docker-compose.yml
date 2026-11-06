@@ -36,6 +36,32 @@ services:
       retries: 3
       start_period: 30s
 
+  read_sensor:
+    image: ghcr.io/nzziw/pydomus:latest
+    container_name: pydomus-read-sensor
+    restart: unless-stopped
+    env_file: .env
+    command: ["python", "manage.py", "read_sensor"]
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - connectors
+      - backend
+
+  telegram_bot:
+    image: ghcr.io/nzziw/pydomus:latest
+    container_name: pydomus-telegram-bot
+    restart: unless-stopped
+    env_file: .env
+    command: ["python", "manage.py", "telegram_bot"]
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - connectors
+      - backend
+
   caddy:
     image: docker.io/caddy:2-alpine
     container_name: pydomus-caddy
@@ -61,6 +87,8 @@ volumes:
 
 networks:
   frontend:
+    driver: bridge
+  connectors:
     driver: bridge
   backend:
     driver: bridge
