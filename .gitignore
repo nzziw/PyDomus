@@ -1,4 +1,7 @@
 .venv
 __pycache__
 db.sqlite3
+.DS_Store
 .env
+pydomus_backup.sql
+pydomus_db_backup.sql

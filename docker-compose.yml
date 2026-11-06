@@ -16,9 +16,43 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - pydomus-network
+      - proxy 
+
+  django:
+    build: .
+    container_name: pydomus-django
+    env_file: .env
+    expose:
+      - "8000"
+    volumes:
+      - ./pydomus/account/static:/app/pydomus/staticfiles
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - proxy
+
+  caddy:
+    image: docker.io/caddy:latest
+    container_name: caddy
+    hostname: caddy
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - ./caddy/conf:/etc/caddy
+      - caddy_data:/data
+      - caddy_config:/config
+      - ./pydomus/account/static:/static:ro
+    networks:
+      - proxy
 
 volumes:
   postgres_data:
+  caddy_data:
+  caddy_config:
+  static_data:
+
 networks:
-  pydomus-network:
+  proxy:
+    driver: bridge

@@ -13,4 +13,5 @@ python-dotenv==1.2.4
 qrcode==8.2
 requests==2.34.2
 sqlparse==0.6.0
+gunicorn
 urllib3==2.8.0
