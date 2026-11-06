@@ -29,11 +29,16 @@ services:
     networks:
       - frontend
       - backend
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health/')\""]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
 
   caddy:
     image: docker.io/caddy:2-alpine
     container_name: pydomus-caddy
-    hostname: caddy
     restart: unless-stopped
     ports:
       - "8080:80"
@@ -44,6 +49,9 @@ services:
       - static_data:/static:ro
     networks:
       - frontend
+    depends_on:
+      django:
+        condition: service_healthy
 
 volumes:
   postgres_data:
