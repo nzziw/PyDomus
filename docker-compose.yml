@@ -32,7 +32,6 @@ services:
     networks:
       - proxy
 
-
   caddy:
     image: docker.io/caddy:latest
     container_name: caddy
@@ -45,17 +44,14 @@ services:
       - caddy_data:/data
       - caddy_config:/config
       - ./pydomus/account/static:/static:ro
-
     networks:
       - proxy
-
 
 volumes:
   postgres_data:
   caddy_data:
   caddy_config:
   static_data:
-
 
 networks:
   proxy:
