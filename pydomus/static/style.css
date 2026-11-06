@@ -341,9 +341,11 @@ button:hover {
     background: var(--danger);
 }
 
-/* ---------- Formulaire de création d'alerte ---------- */
-.alert-form {
+/* ---------- alert form and alerts-triggered ---------- */
+.alert-form,
+.alerts-triggered-list {
     width: 664px;
+    max-width: 100%;
     margin-bottom: 24px;
     padding: 24px;
     text-align: left;
@@ -351,6 +353,12 @@ button:hover {
     border: 1px solid var(--border);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
+}
+
+.alert-form h2,
+.alerts-triggered-list h2 {
+    margin: 0 0 16px;
+    font-size: 1.1rem;
 }
 
 .alert-form h2 {
