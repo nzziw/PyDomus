@@ -12,3 +12,17 @@ def call(methode, timeout_http=10, **params):
 
 def send_message(chat_id, texte):
     return call("sendMessage", chat_id=chat_id, text=texte)
+
+
+def notify(user, text):
+    account = getattr(user, "telegram", None)  # user.telegram or None
+    if (
+        account is None or account.chat_id is None
+    ):  # if the user has no linked Telegram account, do nothing
+        return
+    try:
+        send_message(
+            account.chat_id, text
+        )  # send the message to the user's Telegram account
+    except Exception as e:
+        print(f"Échec de l'envoi Telegram à {user} : {e}")
