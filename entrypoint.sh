@@ -1,5 +1,5 @@
 #!/bin/sh
-set -e   # stop à la 1re erreur
+set -e   # stop on the first error
 
 python manage.py migrate --noinput
 python manage.py collectstatic --noinput

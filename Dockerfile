@@ -1,26 +1,26 @@
-# Image de base : Python 3.13
+# Base image: Python 3.13
 FROM python:3.13-slim
 
-# Empêche Python de mettre en cache les fichiers .pyc et permet d'écrire dans stdout/stderr accessible depuis podman logs
-ENV PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1 
+# Prevent Python from writing .pyc files and disable output buffering so stdout/stderr show up in podman logs
+ENV PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1
 
-# Définit le dossier de travail dans le conteneur
+# Set the working directory inside the container
 WORKDIR /app/pydomus
 
-# Copie le fichier des dépendances dans le conteneur
+# Copy the dependency file into the container
 COPY requirements.txt .
 
-# Installe toutes les bibliothèques nécessaires au projet Django
+# Install all the libraries required by the Django project
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copie le code de l'application Django dans le conteneur
+# Copy the Django application code into the container
 COPY pydomus/ .
 
-# Indique que l'application utilise le port 8000
+# Document that the application listens on port 8000
 EXPOSE 8000
 
-# Commande exécutée au démarrage du conteneur
-# Lance l'application Django avec Gunicorn
+# Command run when the container starts
+# Starts the Django application with Gunicorn
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 CMD ["/entrypoint.sh"]
