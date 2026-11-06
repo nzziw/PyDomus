@@ -35,28 +35,6 @@ def register_view(request):
     return render(request, "account/register.html", {"form": form})
 
 
-def register_view(request):
-    if request.method == "POST":
-        form = RegisterForm(request.POST)
-        if form.is_valid():
-            password1 = form.cleaned_data["password1"]
-            if password1 != form.cleaned_data["password2"]:
-                form.add_error("password2", "Les mots de passe ne correspondent pas.")
-            else:
-                Account.objects.create_user(
-                    username=form.cleaned_data["username"],
-                    email=form.cleaned_data["email"],
-                    password=password1,
-                )
-                messages.success(
-                    request, "Inscription réussie. Veuillez vous connecter."
-                )
-                return redirect("account:login")
-    else:
-        form = RegisterForm()
-    return render(request, "account/register.html", {"form": form})
-
-
 from .forms import LoginForm, RegisterForm, TOTPForm
 from .models import Account
 
@@ -86,6 +64,10 @@ def generate_backup_codes(user, count=10):
 
 # Create your views here.
 def login_view(request):
+    if request.user.is_authenticated:
+        if request.user.is_verified():          # MFA déjà validée
+            return redirect("dashboard:home")
+        return redirect("account:mfa-verify")   # connecté mais MFA pas encore faite
     if request.method == "POST":
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -103,35 +85,6 @@ def login_view(request):
         form = LoginForm()
 
     return render(request, "account/login.html", {"form": form})
-
-
-def register_view(request):
-    if request.method == "POST":
-        form = RegisterForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data["username"]
-            email = form.cleaned_data["email"]
-            password1 = form.cleaned_data["password1"]
-            password2 = form.cleaned_data["password2"]
-
-            if password1 != password2:
-                form.add_error("password2", "Les mots de passe ne correspondent pas.")
-            else:
-                # Create the user
-                user = Account.objects.create_user(
-                    username=username, email=email, password=password1
-                )
-                login(request, user)
-                messages.success(
-                    request, "Inscription réussie. Veuillez vous connecter."
-                )
-                return redirect(
-                    "account:login",
-                )  # Redirect to the login page after successful registration
-    else:
-        form = RegisterForm()
-    return render(request, "account/register.html", {"form": form})
-
 
 @login_required
 def mfa_setup(request):

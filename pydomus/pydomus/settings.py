@@ -16,8 +16,22 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+PROJECT_DIR = Path(__file__).resolve().parent.parent
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 load_dotenv(BASE_DIR / ".env")
+
+# Environment variables for MQTT broker connection
+BROKER_BROKER = os.environ["BROKER_IP"]
+BROKER_TOPIC = os.environ[
+    "BROKER_TOPIC"
+]  # Base topic shared by all devices, e.g., "home" (devices publish on "home/<device>")
+BROKER_PORT = int(os.environ["BROKER_PORT"])
+BROKER_USERNAME = os.environ["BROKER_USERNAME"]
+BROKER_PASSWORD = os.environ["BROKER_PASSWORD"]
+
+# Environment variables for Telegram bot
+TELEGRAM_BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
+TELEGRAM_BOT_USERNAME = os.environ["TELEGRAM_BOT_USERNAME"]
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
@@ -55,6 +69,7 @@ INSTALLED_APPS = [
     "django_otp.plugins.otp_totp",  # TOTPDevice
     "django_otp.plugins.otp_static",  # codes de secours
     "account",
+    "dashboard",
 ]
 
 MIDDLEWARE = [
@@ -73,7 +88,7 @@ ROOT_URLCONF = "pydomus.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [PROJECT_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -138,6 +153,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
 STATIC_URL = "static/"
+STATICFILES_DIRS = [PROJECT_DIR / "static"]
+STATIC_ROOT = PROJECT_DIR / "staticfiles"
 
 
 # Email

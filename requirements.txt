@@ -1,11 +1,17 @@
 asgiref==3.12.1
+certifi==2026.10.23
+charset-normalizer==3.5.2
 Django==6.1.2
 django-otp==1.7.4
+idna==3.20
+paho-mqtt==2.1.0
 pillow==12.3.0
 psycopg==3.3.6
 psycopg-binary==3.3.6
 PyOTP==2.10.0
 python-dotenv==1.2.4
 qrcode==8.2
+requests==2.34.2
 sqlparse==0.6.0
 gunicorn
+urllib3==2.8.0

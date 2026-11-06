@@ -31,44 +31,33 @@
 }
 
 /* ---------- Base ---------- */
-*,
-*::before,
-*::after {
+* {
     box-sizing: border-box;
 }
 
-html,
 body {
     margin: 0;
-    padding: 0;
-}
-
-body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     font-family: var(--font);
-    font-size: 16px;
     line-height: 1.5;
     color: var(--text);
     background: var(--bg);
-    -webkit-font-smoothing: antialiased;
 }
 
 a {
     color: var(--accent);
     text-decoration: none;
     font-weight: 500;
-    transition: color 0.2s ease;
 }
 
 a:hover {
     color: var(--accent-hover);
-    text-decoration: underline;
 }
 
-/* ---------- Barre de navigation ---------- */
-.navbar-login {
+/* ---------- Navbar ---------- */
+.navbar {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -87,35 +76,56 @@ a:hover {
 .navbar-title {
     font-size: 1.25rem;
     font-weight: 600;
-    letter-spacing: 0.3px;
-    color: var(--text);
 }
 
-/* ---------- Mise en page ---------- */
+.navbar a {
+    padding: 6px 10px;
+    color: var(--text-muted);
+    border-radius: 8px;
+}
+
+.navbar a:hover {
+    color: var(--text);
+    background: var(--bg);
+}
+
+.navbar-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: auto;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.navbar-user button {
+    padding: 8px 16px;
+    font-size: 0.875rem;
+}
+
+/* ---------- Page : contenu centré ---------- */
 .page {
     flex: 1;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 40px 16px;
+    text-align: center;
 }
 
-.login-area {
+/* ---------- Carte ---------- */
+.card {
     width: 100%;
     max-width: 400px;
-}
-
-/* ---------- Carte de connexion ---------- */
-.login-card {
+    padding: 40px 36px;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
-    padding: 40px 36px;
-    text-align: center;
 }
 
-.login-card h2 {
+.card h2 {
     margin: 0 0 8px;
     font-size: 1.75rem;
     font-weight: 600;
@@ -127,7 +137,7 @@ a:hover {
     font-size: 0.95rem;
 }
 
-.register-link {
+.card-footer {
     margin: 24px 0 0;
     padding-top: 20px;
     border-top: 1px solid var(--border);
@@ -135,26 +145,23 @@ a:hover {
     color: var(--text-muted);
 }
 
-/* ---------- Formulaire (prêt pour {{ form }} de Django) ---------- */
-.login-card form {
+/* ---------- Formulaire ---------- */
+.card form {
     text-align: left;
 }
 
-.login-card form > div {
+.card form > div {
     margin: 0 0 18px;
 }
 
-.login-card label {
+.card label {
     display: block;
     margin-bottom: 6px;
     font-size: 0.875rem;
     font-weight: 500;
-    color: var(--text);
 }
 
-.login-card input[type="text"],
-.login-card input[type="email"],
-.login-card input[type="password"] {
+.card input {
     width: 100%;
     padding: 11px 14px;
     font: inherit;
@@ -164,20 +171,17 @@ a:hover {
     border: 1px solid var(--border);
     border-radius: 8px;
     outline: none;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.login-card input:focus {
+.card input:focus {
     border-color: var(--accent);
     box-shadow: 0 0 0 3px var(--accent-soft);
     background: var(--surface);
 }
 
-.login-card button,
-.login-card input[type="submit"] {
-    width: 100%;
-    margin-top: 6px;
-    padding: 12px;
+/* ---------- Boutons ---------- */
+button {
+    padding: 12px 20px;
     font: inherit;
     font-weight: 600;
     color: #fff;
@@ -185,40 +189,29 @@ a:hover {
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    transition: background 0.2s ease, transform 0.1s ease;
 }
 
-.login-card button:hover,
-.login-card input[type="submit"]:hover {
+button:hover {
     background: var(--accent-hover);
 }
 
-.login-card button:active,
-.login-card input[type="submit"]:active {
-    transform: scale(0.98);
+.card button {
+    width: 100%;
+    margin-top: 6px;
 }
 
-.form-errors {
-    margin-bottom: 20px;
-    padding: 12px 14px;
-    text-align: left;
-    background: rgba(214, 69, 69, 0.08);
-    border: 1px solid rgba(214, 69, 69, 0.3);
-    border-radius: 8px;
-}
-
-.form-errors .errorlist {
-    margin: 0;
+/* ---------- Erreurs et messages ---------- */
+.errorlist {
+    margin: 6px 0 0;
     padding: 0;
     list-style: none;
     font-size: 0.85rem;
     color: var(--danger);
 }
 
-.form-message {
+.alert {
     margin-bottom: 20px;
     padding: 12px 14px;
-    text-align: left;
     font-size: 0.85rem;
     color: var(--validated);
     background: rgba(46, 158, 91, 0.08);
@@ -226,23 +219,11 @@ a:hover {
     border-radius: 8px;
 }
 
-/* ---------- Responsive ---------- */
-@media (max-width: 480px) {
-    .navbar-login {
-        padding: 12px 16px;
-    }
-
-    .login-card {
-        padding: 32px 22px;
-    }
-}
-
-/* ---------- QR code (page MFA) ---------- */
+/* ---------- Account ---------- */
 .qr-code {
     display: block;
     width: 200px;
     max-width: 100%;
-    height: auto;
     margin: 0 auto 24px;
     padding: 8px;
     background: #fff;
@@ -251,7 +232,6 @@ a:hover {
     image-rendering: pixelated;
 }
 
-/* ---------- Codes de secours ---------- */
 .backup-codes {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -262,13 +242,154 @@ a:hover {
     background: var(--bg);
     border: 1px solid var(--border);
     border-radius: 8px;
+    font-family: ui-monospace, Consolas, monospace;
 }
 
-.backup-codes li {
-    padding: 6px 0;
-    text-align: center;
-    font-family: ui-monospace, Consolas, "Courier New", monospace;
-    font-size: 0.95rem;
-    letter-spacing: 1px;
+/* ---------- Dashboard ---------- */
+.page h1 {
+    margin: 0 0 32px;
+    font-size: 1.75rem;
+    font-weight: 600;
+}
+
+.sensors {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+}
+
+.sensor {
+    width: 240px;
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.sensor h2 {
+    margin: 0 0 8px;
+    font-size: 1.1rem;
+}
+
+.sensor p {
+    margin: 4px 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.sensor .valeur {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--accent);
+}
+
+.sensor .normal {
+    color: var(--validated);
+}
+
+/* ---------- Alerts ---------- */
+.alert-column {
+    width: 320px;
+}
+
+.alert-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.alert-list li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+}
+
+.alert-list li:last-child {
+    border-bottom: none;
+}
+
+.alert-device {
+    flex: 1;
+    font-weight: 600;
     color: var(--text);
+}
+
+.alert-delete-form {
+    margin: 0;
+}
+
+.alert-delete {
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    font-size: 0.75rem;
+    line-height: 1;
+    color: var(--danger);
+    background: transparent;
+    border: 1px solid var(--danger);
+    border-radius: 6px;
+}
+
+.alert-delete:hover {
+    color: #fff;
+    background: var(--danger);
+}
+
+/* ---------- alert form and alerts-triggered ---------- */
+.alert-form,
+.alerts-triggered-list {
+    width: 664px;
+    max-width: 100%;
+    margin-bottom: 24px;
+    padding: 24px;
+    text-align: left;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.alert-form h2,
+.alerts-triggered-list h2 {
+    margin: 0 0 16px;
+    font-size: 1.1rem;
+}
+
+.alert-form h2 {
+    margin: 0 0 16px;
+    font-size: 1.1rem;
+}
+
+.alert-form-fields {
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+}
+
+.alert-form .form-field {
+    flex: 1;
+}
+
+.alert-form label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.alert-form select,
+.alert-form input {
+    width: 100%;
+    padding: 10px;
+    font: inherit;
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
 }
