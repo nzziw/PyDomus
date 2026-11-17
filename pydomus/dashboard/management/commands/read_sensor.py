@@ -141,3 +141,6 @@ class Command(BaseCommand):
 
         client.connect(settings.BROKER_BROKER, settings.BROKER_PORT, keepalive=60)
         client.loop_forever()
+
+
+def control_actuator (client, device_type, state):
