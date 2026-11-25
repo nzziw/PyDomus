@@ -43,33 +43,70 @@ Les grandeurs supervisées sont la **température**, le **taux d'humidité** et 
 
 ## Installation depuis les sources
 
+### Prérequis
+* Git
+* Podman et `podman compose` (ou Docker et `docker compose`)
+* Un broker MQTT et Zigbee2MQTT déjà opérationnels et joignables depuis la machine
+* Un bot Telegram (token et nom d'utilisateur fournis par [@BotFather](https://t.me/BotFather))
+
 ### 1. Cloner le dépôt
 ```bash
-git clone https://github.com/Unclad5572/PyDomus.git
+git clone https://github.com/nzziw/PyDomus.git
 cd PyDomus
 ```
 
-## 2. Créer l'environnement virtuel et installer les dépendances
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install --upgrade pip
-pip install -r requirements.txt
-```
-
-### 3. Configurer les variables d'environnement
+### 2. Configurer les variables d'environnement
 ```bash
 cp .env.example .env
 ```
-Modifiez ce que vous souhaitez dans le .env
+Renseignez ensuite le fichier `.env` :
 
-### 4. Créer l'environnement virtuel et installer les dépendances
+| Variable | Description |
+|----------|-------------|
+| `DJANGO_SECRET_KEY` | Clé secrète Django, à générer avec `python3 -c "import secrets; print(secrets.token_urlsafe(50))"` |
+| `DJANGO_DEBUG` | `True` uniquement en développement, `False` sinon |
+| `DJANGO_ALLOWED_HOSTS` | IP et/ou noms de domaine utilisés pour accéder à l'application, séparés par des virgules |
+| `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB` | Identifiants de la base PostgreSQL (créée automatiquement au premier démarrage) |
+| `POSTGRES_HOST`, `POSTGRES_PORT` | Laisser `db` et `5432` (nom du service dans `docker-compose.yml`) |
+| `BROKER_IP`, `BROKER_PORT` | Adresse et port du broker MQTT |
+| `BROKER_USERNAME`, `BROKER_PASSWORD` | Identifiants du broker MQTT |
+| `BROKER_TOPIC` | Topic de base de Zigbee2MQTT (ex. `home`, les équipements publiant sur `home/<equipement>`) |
+| `TELEGRAM_BOT_TOKEN`, `TELEGRAM_BOT_USERNAME` | Token et nom d'utilisateur du bot Telegram |
+
+### 3. Lancer la stack
 ```bash
-docker compose up -d
+podman compose up -d
+```
+L'image `ghcr.io/nzziw/pydomus:latest` est téléchargée automatiquement au premier lancement. Cette commande démarre les services suivants :
+
+| Service | Rôle |
+|---------|------|
+| `db` | Base de données PostgreSQL 16 |
+| `django` | Application web (Gunicorn) ; les migrations et `collectstatic` sont exécutés automatiquement au démarrage |
+| `read_sensor` | Abonnement MQTT : lecture des capteurs et pilotage de la prise |
+| `telegram_bot` | Bot Telegram d'envoi des notifications |
+| `caddy` | Reverse proxy et service des fichiers statiques |
+
+Vérifiez que tous les conteneurs sont démarrés :
+```bash
+podman compose ps
 ```
 
-### 5. Appliquer les migrations et lancer le serveur
+### 4. Créer un compte administrateur
 ```bash
-python3 pydomus/manage.py migrate
-python3 pydomus/manage.py runserver 0.0.0.0:8000
+podman compose exec django python manage.py createsuperuser
+```
+
+### 5. Accéder à l'application
+L'interface est disponible sur `http://<ip-ou-domaine>:8080`.
+
+### Mise à jour
+```bash
+podman compose pull
+podman compose up -d
+```
+
+### Consulter les logs
+```bash
+podman compose logs -f django read_sensor telegram_bot
 ```
