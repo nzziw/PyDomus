@@ -37,12 +37,13 @@ TELEGRAM_BOT_USERNAME = os.environ["TELEGRAM_BOT_USERNAME"]
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-on4*!i&k2nwa(d#l3$m$nb&k^p8nek7ti40i)^(322v3p_30gx"
+SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DJANGO_DEBUG") == "True"
 
-ALLOWED_HOSTS = ["*"]
+# localhost is needed by the container healthcheck
+ALLOWED_HOSTS = ["localhost"] + os.environ["DJANGO_ALLOWED_HOSTS"].split(",")
 
 # Auth user model
 AUTH_USER_MODEL = "account.Account"

@@ -1,5 +1,7 @@
 name: deploy an image to docker hub
 on:
+  push:
+    branches: [main]
   pull_request:
     branches: [main]
 
@@ -24,6 +26,7 @@ jobs:
         uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 #v4.4.1
 
       - name: log in to docker hub
+        if: github.event_name == 'push'
         uses: docker/login-action@81c6f93d4bc991e510b342a00b419b3bb4efc5c6 #v4.7.0
         with:
           registry: ghcr.io
@@ -35,7 +38,7 @@ jobs:
         with:
           context: .
           platforms: linux/amd64,linux/arm64
-          push: true
+          push: ${{ github.event_name == 'push' }}
           tags: |
             ${{ env.IMAGE }}:latest
             ${{ env.IMAGE }}:${{ github.sha }}
