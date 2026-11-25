@@ -141,3 +141,36 @@ class Command(BaseCommand):
 
         client.connect(settings.BROKER_BROKER, settings.BROKER_PORT, keepalive=60)
         client.loop_forever()
+
+#fonction that recognizes type of device
+def identify_device_type(data):
+    if "temperature" in data or "humidity" in data or "battery" in data:
+        return Device.DeviceType.SENSOR
+    else
+        if "state" in data or "name" in data:
+            return Device.DeviceType.SWITCH
+
+    return None
+
+
+#fonction that updates the state of a plug 
+def update_plug_state(state, topic):
+    #check if eh switch already exists in the db otherwise create it 
+    device = Device.objects.get_or_create()
+
+
+
+
+    plug.state=(state==ON) #update the plug state (true = ON, false = OFF)
+    plug.save() #save the new state in the db 
+
+
+
+
+#fonction that get the state of the plug and return it 
+def get_plug_state(topic):
+    #look for the plug in the db , get its state and return it 
+
+
+
+
