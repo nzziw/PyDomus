@@ -105,15 +105,4 @@ class SensorAlert(models.Model):
             f"{self.get_operator_display()} {self.threshold}"
         )
 
-class Plug(models.Model):
-    device = models.OneToOneField( #OneToOneField because ne device has ne plug not several per device
-        Device,
-        on_delete=models.CASCADE,
-        related_name="plug",
-    )
-    name = models.CharField(max_length=100)
-    state = models.BooleanField(default=False)  # True for ON, False for OFF
-    updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return f"{self.name} ({'ON' if self.state else 'OFF'})"
