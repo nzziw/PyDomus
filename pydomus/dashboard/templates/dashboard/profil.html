@@ -1,14 +1,24 @@
 {% extends 'dashboard/base_dashboard.html' %}
 {% block content %}
-    <h1>Votre Profil :</h1>
     <div class="profil">
-        <p><strong>Nom d'utilisateur :</strong> {{ user.username }}</p>
-        <p><strong>Email :</strong> {{ user.email }}</p>
-        {% if compte.chat_id %}
-            <p>Telegram lié depuis le {{ compte.linked_at|date:"d/m/Y H:i" }}.</p>
+        <div class="profil-avatar">{{ user.username|first|upper }}</div>
+        <h2>{{ user.username }}</h2>
+
+        <dl class="profil-infos">
+            <dt>Nom d'utilisateur</dt>
+            <dd>{{ user.username }}</dd>
+            <dt>Email</dt>
+            <dd>{{ user.email|default:"—" }}</dd>
+        </dl>
+
+        <div class="profil-telegram">
+            <h3>Telegram</h3>
+            {% if compte.chat_id %}
+                <p class="normal">✓ Lié depuis le {{ compte.linked_at|date:"d/m/Y H:i" }}</p>
             {% else %}
-            <p>Recevez vos alertes sur Telegram :</p>
-            <a href="{{ lien }}" target="_blank">Lier mon compte Telegram</a>
-        {% endif %}
+                <p>Recevez vos alertes sur Telegram.</p>
+                <a href="{{ lien }}" target="_blank" rel="noopener" class="btn">Lier mon compte Telegram</a>
+            {% endif %}
+        </div>
     </div>
 {% endblock %}
