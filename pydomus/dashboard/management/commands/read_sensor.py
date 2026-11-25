@@ -156,4 +156,15 @@ def identify_device_type(data):
 #fonction that updates the state of a plug 
 def update_plug_state(state, topic):
     #check if eh switch already exists in the db otherwise create it 
-    
+    device = Device.objects.get_or_create()
+
+
+
+
+#fonction that get the state of the plug and return it 
+def get_plug_state(topic):
+    #look for the plug in the db , get its state and return it 
+
+
+
+
