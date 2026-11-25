@@ -161,6 +161,12 @@ def update_plug_state(state, topic):
 
 
 
+    plug.state=(state==ON) #update the plug state (true = ON, false = OFF)
+    plug.save() #save the new state in the db 
+
+
+
+
 #fonction that get the state of the plug and return it 
 def get_plug_state(topic):
     #look for the plug in the db , get its state and return it 
