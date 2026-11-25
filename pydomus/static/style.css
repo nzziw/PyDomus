@@ -260,7 +260,7 @@ button:hover {
 }
 
 .sensor {
-    width: 240px;
+    min-width: 240px;
     padding: 24px;
     background: var(--surface);
     border: 1px solid var(--border);
@@ -288,6 +288,37 @@ button:hover {
 .sensor .normal {
     color: var(--validated);
 }
+
+/* ---------- Gauges (demi-cercle) ---------- */
+.gauges {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin: 16px 0;
+}
+
+.gauge-box {
+    text-align: center;
+}
+
+/* --p : 0–100 (template), --color : couleur de l'arc */
+.gauge {
+    width: 140px;
+    height: 70px;
+    border-radius: 70px 70px 0 0;
+    background: conic-gradient(from -90deg at 50% 100%, var(--color) calc(var(--p) * 1.8deg), var(--border) 0);
+    mask: radial-gradient(circle at 50% 100%, transparent 52px, #000 53px);
+}
+
+.gauge-box strong {
+    display: block;
+    margin-top: -1.6em;
+    font-size: 1.4rem;
+    color: var(--text);
+}
+
+.gauge-temp { --color: #5aa55a; }
+.gauge-hum  { --color: #f0a840; }
 
 /* ---------- Alerts ---------- */
 .alert-column {

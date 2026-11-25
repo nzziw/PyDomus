@@ -23,12 +23,22 @@
             <h2>{{ sensor.device.name }}</h2>
 
             {% if sensor.last_reading %}
-                {% if sensor.last_reading.temperature is not None %}
-                    <p class="valeur">{{ sensor.last_reading.temperature }} °C</p>
-                {% endif %}
-                {% if sensor.last_reading.humidity is not None %}
-                    <p class="valeur">Humidité : {{ sensor.last_reading.humidity }} %</p>
-                {% endif %}
+                <div class="gauges">
+                    {% if sensor.last_reading.temperature is not None %}
+                    <div class="gauge-box">
+                        <div class="gauge gauge-temp" style="--p: {% widthratio sensor.last_reading.temperature 50 100 %}"></div>
+                        <strong>{{ sensor.last_reading.temperature|floatformat:1 }} °C</strong>
+                        <p>Température</p>
+                    </div>
+                    {% endif %}
+                    {% if sensor.last_reading.humidity is not None %}
+                    <div class="gauge-box">
+                        <div class="gauge gauge-hum" style="--p: {{ sensor.last_reading.humidity|floatformat:0 }}"></div>
+                        <strong>{{ sensor.last_reading.humidity|floatformat:0 }} %</strong>
+                        <p>Humidité</p>
+                    </div>
+                    {% endif %}
+                </div>
                 {% if sensor.last_reading.battery is not None %}
                     <p class="lieu">Batterie : {{ sensor.last_reading.battery }} %</p>
                 {% endif %}
