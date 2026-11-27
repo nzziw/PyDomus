@@ -13,7 +13,11 @@ from .models import Device
 def home_view(request):
     devices = []
     for device in Device.objects.all():
-        devices.append({"device": device, "last_reading": device.readings.first()})
+        if device.device_type == Device.DeviceType.SWITCH:
+            last_reading = device.switch_readings.first()
+        else:
+            last_reading = device.readings.first()
+        devices.append({"device": device, "last_reading": last_reading})
     triggered_alerts = request.user.alerts.filter(triggered=True)
 
     return render(
