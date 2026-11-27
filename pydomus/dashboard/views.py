@@ -8,6 +8,7 @@ from .models import Device
 
 
 # Create your views here.
+#home_view get data of all type of devices 
 @otp_required
 def home_view(request):
     devices = []
