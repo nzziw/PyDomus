@@ -48,7 +48,7 @@ class SensorReading(models.Model):
 
 class SwitchReading(models.Model):
     device = models.ForeignKey(
-        Device, on_delete=models.CASCADE, related_name="readings"
+        Device, on_delete=models.CASCADE, related_name="switch_readings"
     )
 
     consumption = models.FloatField(null=True, blank=True)

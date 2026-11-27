@@ -19,6 +19,7 @@ def home_view(request):
         request,
         "dashboard/index.html",
         {"devices": devices, "triggered_alerts": triggered_alerts},
+    
     )
 
 
