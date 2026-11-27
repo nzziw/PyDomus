@@ -46,6 +46,7 @@ class SensorReading(models.Model):
     def __str__(self):
         return f"{self.device.topic}"
 
+#add new model to save switch data 
 class SwitchReading(models.Model):
     device = models.ForeignKey(
         Device, on_delete=models.CASCADE, related_name="switch_readings"
