@@ -18,37 +18,73 @@
         </ul>
     </div>
     <div class="sensors">
-        {% for sensor in sensors %}
-        <div class="sensor">
-            <h2>{{ sensor.device.name }}</h2>
+        {% for device in devices %}
+        {% if device.device_type =="SENSOR" %}
+            <div class="sensor">
+                <h2>{{ sensor.device.name }}</h2>
 
-            {% if sensor.last_reading %}
-                <div class="gauges">
-                    {% if sensor.last_reading.temperature is not None %}
-                    <div class="gauge-box">
-                        <div class="gauge gauge-temp" style="--p: {% widthratio sensor.last_reading.temperature 50 100 %}"></div>
-                        <strong>{{ sensor.last_reading.temperature|floatformat:1 }} °C</strong>
-                        <p>Température</p>
+                {% if sensor.last_reading %}
+                    <div class="gauges">
+                        {% if sensor.last_reading.temperature is not None %}
+                        <div class="gauge-box">
+                            <div class="gauge gauge-temp" style="--p: {% widthratio sensor.last_reading.temperature 50 100 %}"></div>
+                            <strong>{{ sensor.last_reading.temperature|floatformat:1 }} °C</strong>
+                            <p>Température</p>
+                        </div>
+                        {% endif %}
+                        {% if sensor.last_reading.humidity is not None %}
+                        <div class="gauge-box">
+                            <div class="gauge gauge-hum" style="--p: {{ sensor.last_reading.humidity|floatformat:0 }}"></div>
+                            <strong>{{ sensor.last_reading.humidity|floatformat:0 }} %</strong>
+                            <p>Humidité</p>
+                        </div>
+                        {% endif %}
                     </div>
+                    {% if sensor.last_reading.battery is not None %}
+                        <p class="lieu">Batterie : {{ sensor.last_reading.battery }} %</p>
                     {% endif %}
-                    {% if sensor.last_reading.humidity is not None %}
-                    <div class="gauge-box">
-                        <div class="gauge gauge-hum" style="--p: {{ sensor.last_reading.humidity|floatformat:0 }}"></div>
-                        <strong>{{ sensor.last_reading.humidity|floatformat:0 }} %</strong>
-                        <p>Humidité</p>
-                    </div>
-                    {% endif %}
-                </div>
-                {% if sensor.last_reading.battery is not None %}
-                    <p class="lieu">Batterie : {{ sensor.last_reading.battery }} %</p>
+                    <p class="normal">Mis à jour le {{ sensor.last_reading.recorded_at|date:"d/m/Y H:i" }}</p>
+                {% else %}
+                    <p class="normal">Aucune mesure reçue</p>
                 {% endif %}
-                <p class="normal">Mis à jour le {{ sensor.last_reading.recorded_at|date:"d/m/Y H:i" }}</p>
-            {% else %}
-                <p class="normal">Aucune mesure reçue</p>
-            {% endif %}
-        </div>
-        {% empty %}
-            <p>Aucun capteur enregistré.</p>
-        {% endfor %}
+        {% else %}
+            
+    <div class="switch">
+        <h2>{{ device.device.name }}</h2>
+
+        {% if device.last_reading %}
+            <div class="gauges">
+
+                {% if device.last_reading.state is not None %}
+                    <div class="gauge-box">
+                        <strong>State : {{ device.last_reading.state }}</strong>
+                        <p>Interrupteur</p>
+                    </div>
+                {% endif %}
+
+                {% if device.last_reading.power is not None %}
+                    <div class="gauge-box">
+                        <strong>{{ device.last_reading.power|floatformat:0 }} W</strong>
+                        <p>Puissance</p>
+                    </div>
+                {% endif %}
+
+                {% if device.last_reading.voltage is not None %}
+                    <div class="gauge-box">
+                        <strong>{{ device.last_reading.voltage|floatformat:0 }} V</strong>
+                        <p>Tension</p>
+                    </div>
+                {% endif %}
+
+                {% if device.last_reading.consumption is not None %}
+                    <div class="gauge-box">
+                        <strong>{{ device.last_reading.consumption }}</strong>
+                        <p>Consommation</p>
+                    </div>
+                {% endif %}
+
+            </div>
+        {% else %}
+            <p class="normal">Aucune mesure reçue</p>
+        {% endif %}
     </div>
-{% endblock %}
