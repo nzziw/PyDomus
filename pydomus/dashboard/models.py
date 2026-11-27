@@ -46,6 +46,24 @@ class SensorReading(models.Model):
     def __str__(self):
         return f"{self.device.topic}"
 
+class SwitchReading(models.Model):
+    device = models.ForeignKey(
+        Device, on_delete=models.CASCADE, related_name="readings"
+    )
+
+    consumption = models.FloatField(null=True, blank=True)
+    state = models.CharField(max_length=10, null=True, blank=True)
+    power = models.FloatField(null=True, blank=True)
+    voltage = models.FloatField(null=True, blank=True)
+
+    recorded_at = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        ordering = ["-recorded_at"]
+
+    def __str__(self):
+        return f"{self.device.topic}"
+
 
 class SensorAlert(models.Model):
     class Metric(models.TextChoices):
