@@ -5,3 +5,5 @@ db.sqlite3
 .env
 pydomus_backup.sql
 pydomus_db_backup.sql
+docker-compose-dev.yml
+plotly.min.js
