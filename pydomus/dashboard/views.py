@@ -8,20 +8,39 @@ from .models import Device
 
 
 # Create your views here.
-#home_view get data of all type of devices 
+#home_view get data of all type of devices sensor and swtich
 @otp_required
 def home_view(request):
     devices = []
+
     for device in Device.objects.all():
-        devices.append({"device": device, "last_reading": device.readings.first()})
+
+        if device.device_type == Device.DeviceType.SENSOR:
+            last_reading = device.readings.first() 
+
+        elif device.device_type == Device.DeviceType.SWITCH:
+            last_reading = device.switch_readings.first()
+
+        else:
+            last_reading = None
+
+        devices.append({
+            "device": device,
+            "last_reading": last_reading,
+        })
+
     triggered_alerts = request.user.alerts.filter(triggered=True)
 
     return render(
         request,
         "dashboard/index.html",
-        {"devices": devices, "triggered_alerts": triggered_alerts},
-    
+        {
+            "devices": devices,
+            "triggered_alerts": triggered_alerts,
+        },
     )
+
+
 
 
 @otp_required

@@ -19,9 +19,9 @@
     </div>
     <div class="sensors">
         {% for device in devices %}
-        {% if device.device_type =="SENSOR" %}
+        {% if device.device_type =="sensor" %}
             <div class="sensor">
-                <h2>{{ sensor.device.name }}</h2>
+                <h2>{{ device.device.name }}</h2>
 
                 {% if sensor.last_reading %}
                     <div class="gauges">
@@ -84,7 +84,9 @@
                 {% endif %}
 
             </div>
-        {% else %}
+
+        {% else %}    
+     
             <p class="normal">Aucune mesure reçue</p>
         {% endif %}
     </div>
