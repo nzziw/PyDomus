@@ -9,4 +9,5 @@ urlpatterns = [
     path("alert/", views.alert_view, name="alert"),
     path("alert/<int:pk>/delete/", views.alert_delete_view, name="alert_delete"),
     path("profil/", views.profil_view, name="profil"),
+    path("chart/", views.chart_view, name="chart"),
 ]
