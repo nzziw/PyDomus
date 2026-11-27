@@ -1,0 +1,46 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% load static %}
+
+{% block extra_js %}
+<script src="{% static 'js/plotly.min.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<h1>Historique</h1>
+
+{% if devices %}
+<div class="chart-card">
+
+  <form method="get" class="chart-filters">
+    <select name="device">
+      {% for d in devices %}
+        <option value="{{ d.pk }}" {% if d.pk == device.pk %}selected{% endif %}>{{ d.name }}</option>
+      {% endfor %}
+    </select>
+
+    <select name="metric">
+      {% for key, label in metrics %}
+        <option value="{{ key }}" {% if key == metric %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+
+    <select name="period">
+      {% for hours, label in periods %}
+        <option value="{{ hours }}" {% if hours == period %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+
+    <button type="submit">Afficher</button>
+  </form>
+
+  {% if chart %}
+    {{ chart|safe }}
+  {% else %}
+    <p class="chart-empty">Aucune mesure pour {{ device.name }} sur cette période.</p>
+  {% endif %}
+
+</div>
+{% else %}
+  <p class="chart-empty">Aucun capteur configuré.</p>
+{% endif %}
+{% endblock %}

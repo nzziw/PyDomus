@@ -7,6 +7,7 @@
     <a href="{% url 'dashboard:home' %}">Tableau de bord</a>
     <a href="{% url 'dashboard:alert' %}">Système d'alerte</a>
     <a href="{% url 'dashboard:profil' %}">Profile</a>
+    <a href="{% url 'dashboard:chart' %}">Historique</a>
     {% block navbar_links %}{% endblock %}
     <form method="post" action="{% url 'account:logout' %}" class="navbar-user">
         {% csrf_token %}

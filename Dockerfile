@@ -20,6 +20,12 @@ RUN chmod +x /entrypoint.sh
 # Copy the Django application code into the container (changes often, so it comes last)
 COPY pydomus/ .
 
+# Extract plotly.js from the installed Python package so charts work without an internet connection
+# (the file is served locally by the reverse proxy instead of a CDN)
+RUN mkdir -p static/js && \
+    python -c "from plotly.offline import get_plotlyjs; open('static/js/plotly.min.js', 'w').write(get_plotlyjs())"
+
+
 # Document that the application listens on port 8000
 EXPOSE 8000
 

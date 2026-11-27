@@ -507,3 +507,39 @@ button:hover {
     color: #fff;
     background: var(--accent-hover);
 }
+
+/* ---------- Chart ---------- */
+.chart-card {
+    width: 960px;
+    max-width: 100%;
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.chart-filters {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.chart-filters select {
+    flex: 1;
+    padding: 10px;
+    font: inherit;
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+
+.chart-filters button {
+    padding: 10px 20px;
+}
+
+.chart-empty {
+    padding: 40px 0;
+    color: var(--text-muted);
+}
